@@ -1,7 +1,7 @@
 import config
 import db
 import utils
-from flask import Flask, request, send_file, make_response
+from flask import Flask, request, send_file, make_response, render_template
 
 app = Flask(__name__, static_url_path='')
 db_connection = db.DbAccess(config.DATABASE_FILENAME)
@@ -9,12 +9,31 @@ db_connection = db.DbAccess(config.DATABASE_FILENAME)
 @app.route("/")
 def homeRoute():
     """ Home + tool to create (nocount/count + url in url) """
-    render_template('index.html')
+    return render_template('index.html')
 
 
 @app.route("/count")
 def countRoute():
     """ Return the count for a url and add 1 to it """
+    # Attempt to find any sign of a url, return 404 if we can't find anything
+    url = utils.getURL(request)
+    if url is None:
+        return "", 404
+
+    # Get/generate cookie, add a view, get the count and commit changes
+    cookie = utils.getCookie(request, url)
+    db_connection.addView(url, cookie)
+    count = db_connection.getCount(url)
+    db_connection.commit()
+
+    # Respond with count and status of 200 and give cookie back
+    response = make_response(str(count), 200)
+    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    return response
+
+@app.route("/count/tag.svg")
+def countTagRoute():
+    """ Return svg of count and add 1 to url """
     url = utils.getURL(request)
     if url is None:
         return "", 404
@@ -24,18 +43,11 @@ def countRoute():
     count = db_connection.getCount(url)
     db_connection.commit()
 
-    response = make_response(str(count), 200)
-    response.set_cookie(url, cookie)
+    svg = utils.getSVG(count).encode('utf-8')
+    response = make_response(svg, 200)
+    response.content_type = 'image/svg+xml'
+    response.set_cookie(url, cookie, expires=utils.getExpiration())
     return response
-
-@app.route("/count/tag.svg")
-def countTagRoute():
-    """ Return svg of count and add 1 to url """
-    # svg = StringIO()
-    # svg.write(getSVG(count))
-    # svg.seek(0)
-    # return send_file(svg, mimetype='image/svg+xml')
-    pass
 
 @app.route("/nocount")
 def nocountRoute():
