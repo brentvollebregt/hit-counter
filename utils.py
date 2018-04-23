@@ -1,6 +1,7 @@
 import config
 import random
 import string
+import datetime
 
 
 def getSVG(count):
@@ -21,3 +22,7 @@ def getCookie(request, url):
 def randomValue():
     """ Generate a random string from upper and lowercase letters and digits of a define length """
     return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(config.RANDOM_VALUE_LENGTH)])
+
+def getExpiration():
+    expire_date = datetime.datetime.now()
+    return expire_date + datetime.timedelta(seconds=config.COOKIE_TIMEOUT)
