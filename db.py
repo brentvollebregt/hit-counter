@@ -31,13 +31,20 @@ class DbAccess:
             return data[0]
 
     def addView(self, url, value):
+        # Make sure the url entry exists
         count = self.getCount(url)
         if count == 0:
             self.cursor.execute('INSERT INTO url(url, count) VALUES(?, ?)', (url, 0))
-        # TODO Check if cookie value already there
+        # Get id of the url we are coutning
         self.cursor.execute('SELECT id FROM url WHERE url=?', (url,))
         url_id = self.cursor.fetchone()[0]
-        self.cursor.execute('UPDATE url SET count = count + 1 WHERE id=?', (url_id,))
+        # Return if cookie value already here for the url
+        self.cursor.execute('SELECT * FROM views WHERE url_id=? AND value=?', (url_id, value))
+        if self.cursor.fetchone() is not None:
+            return
+        # Add 1 to the url count
+        self.cursor.execute('UPDATE url SET count = count + 1 WHERE id=?', (url_id, ))
+        # Add this view to the table with a timeout
         cookie_expiration = time.time() + config.COOKIE_TIMEOUT
         self.cursor.execute('INSERT INTO views(url_id, value, time) VALUES(?, ?, ?)', (url_id, value, cookie_expiration))
 
