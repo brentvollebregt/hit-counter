@@ -52,12 +52,34 @@ def countTagRoute():
 @app.route("/nocount")
 def nocountRoute():
     """ Return the count for a url """
-    pass
+    url = utils.getURL(request)
+    if url is None:
+        return "", 404
+
+    cookie = utils.getCookie(request, url)
+    count = db_connection.getCount(url)
+    db_connection.commit()
+
+    response = make_response(str(count), 200)
+    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    return response
 
 @app.route("/nocount/tag.svg")
 def nocountTagRoute():
     """ Return svg of count """
-    pass
+    url = utils.getURL(request)
+    if url is None:
+        return "", 404
+
+    cookie = utils.getCookie(request, url)
+    count = db_connection.getCount(url)
+    db_connection.commit()
+
+    svg = utils.getSVG(count).encode('utf-8')
+    response = make_response(svg, 200)
+    response.content_type = 'image/svg+xml'
+    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    return response
 
 if __name__ == '__main__':
     ip = '127.0.0.1'
