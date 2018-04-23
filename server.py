@@ -20,8 +20,9 @@ def countRoute():
     if url is None:
         return "", 404
 
-    # Get/generate cookie, add a view, get the count and commit changes
+    # Get/generate cookie, cleanup views, add a view, get the count and commit changes
     cookie = utils.getCookie(request, url)
+    db_connection.clean()
     db_connection.addView(url, cookie)
     count = db_connection.getCount(url)
     db_connection.commit()
@@ -39,6 +40,7 @@ def countTagRoute():
         return "", 404
 
     cookie = utils.getCookie(request, url)
+    db_connection.clean()
     db_connection.addView(url, cookie)
     count = db_connection.getCount(url)
     db_connection.commit()
@@ -57,6 +59,7 @@ def nocountRoute():
         return "", 404
 
     cookie = utils.getCookie(request, url)
+    db_connection.clean()
     count = db_connection.getCount(url)
     db_connection.commit()
 
@@ -72,6 +75,7 @@ def nocountTagRoute():
         return "", 404
 
     cookie = utils.getCookie(request, url)
+    db_connection.clean()
     count = db_connection.getCount(url)
     db_connection.commit()
 
