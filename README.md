@@ -1,7 +1,7 @@
 # Hit Counter
 Easily count hits on a website by requesting a svg that displays a hit count.
 
-Live demo hosted at:
+Live demo hosted at: [hitcounter.pythonanywhere.com](http://hitcounter.pythonanywhere.com/)
 
 # What is This?
 This is a server that allows a client to request for a svg file that displays views for a url. This url can either be passed as a query parameter or the referrer (or referer) value in the header will be used.
@@ -16,18 +16,18 @@ This project was inspired by [https://github.com/dwyl/hits](https://github.com/d
 ## Getting an SVG
 To get an image for the current url (for example is image is being requested by www.example.com), simply get the image as you normally would:
 
-```<img src="http://livedemo.com/count/tag.svg" alt="Hits">```
+```<img src="http://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">```
 
 In this example a hit would be added to the websites count on the server. To stop this form occurring but still get the svg file, use:
 
-```<img src="http://livedemo.com/nocount/tag.svg" alt="Hits">```
+```<img src="http://hitcounter.pythonanywhere.com/nocount/tag.svg" alt="Hits">```
 
 ## Getting the Count Raw
 If you don't want the SVG file but still want the count to use in something else, you can do a GET request to ```/count``` or as before ```/nocount``` to not add a count. For Example:
 
 ```javascript
 let xmlHttp = new XMLHttpRequest();
-xmlHttp.open('GET', 'http://livedemo.com/count', false);
+xmlHttp.open('GET', 'http://hitcounter.pythonanywhere.com/count', false);
 xmlHttp.send(null);
 count = xmlHttp.responseText;
 ```
@@ -37,7 +37,7 @@ There may be circumstances that the referrer may not be sent or you may want to 
 
 For example, getting an svg:
 
-```<img src="http://livedemo.com/count/tag.svg?url=www.example.com" alt="Hits">```
+```<img src="http://hitcounter.pythonanywhere.com/nocount/tag.svg?url=www.example.com" alt="Hits">```
 
 And if you want to get the count:
 
@@ -45,7 +45,7 @@ And if you want to get the count:
 let targetUrl = 'www.example.com';
 let query = '?url=' + encodeURIComponent(targetUrl);
 let xmlHttp = new XMLHttpRequest();
-xmlHttp.open('GET', 'http://livedemo.com/count', false);
+xmlHttp.open('GET', 'http://hitcounter.pythonanywhere.com/nocount', false);
 xmlHttp.send(null);
 count = xmlHttp.responseText;
 ```
