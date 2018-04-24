@@ -1,5 +1,5 @@
-DATABASE_FILENAME = 'data.db'
-COOKIE_TIMEOUT = 600
+DATABASE_FILENAME = 'data.db' # Location of database
+COOKIE_TIMEOUT = 600 # In seconds
 SVG_TEMPLATE = """<?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="20">
 
@@ -12,5 +12,5 @@ SVG_TEMPLATE = """<?xml version="1.0"?>
 	    <text x="15" y="14">hits</text>
 	    <text x="54" y="14">{count}</text>
 	</g>
-</svg>"""
-RANDOM_VALUE_LENGTH = 12
+</svg>""" # Template of SVG with {count} to be provided
+RANDOM_VALUE_LENGTH = 12 # Length of cookie value (stored both server and client side)

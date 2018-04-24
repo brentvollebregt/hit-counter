@@ -24,5 +24,6 @@ def randomValue():
     return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(config.RANDOM_VALUE_LENGTH)])
 
 def getExpiration():
+    """ Get the expiration time in seconds using defined timeout """
     expire_date = datetime.datetime.now()
     return expire_date + datetime.timedelta(seconds=config.COOKIE_TIMEOUT)
