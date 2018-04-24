@@ -138,11 +138,11 @@
                 <option>no-count</option>
             </select>
             <p class="small_headers">Image Tag</p>
-            <p id="resultImageTag" class="head_text" style="margin-top: 0">&lt;img src=&quot;<script>host()</script>/nocount/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter&quot; alt=&quot;Hits&quot;&gt;</p>
+            <p id="resultImageTag" class="head_text" style="margin-top: 0"></p>
             <p class="small_headers">Markdown</p>
-            <p id="resultMarkdown" class="head_text" style="margin-top: 0">![Hits](<script>host()</script>/nocount/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter)</p>
+            <p id="resultMarkdown" class="head_text" style="margin-top: 0"></p>
             <div style="margin: 10px 0;">
-                <img id="resultImage" src="/nocount/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
+                <img id="resultImage" src="">
             </div>
             <button class="copy_button" onclick="copyContentOf('resultImageTag')">Copy Image Tag</button>
             <button class="copy_button" onclick="copyContentOf('resultMarkdown')">Copy Markdown</button>
@@ -153,11 +153,12 @@
             <input id="urlCheck" placeholder="https://github.com/brentvollebregt/hit-counter" value="https://github.com/brentvollebregt/hit-counter" style="width: 70%;" onkeyup="checkUrl()">
         </div>
         <div style="margin-top: 10px;">
-            <img id="urlCheckImage" src="/nocount/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
+            <img id="urlCheckImage" src="" alt="Hits">
         </div>
 
         <h2>Github Page</h2>
         <p>If you want to check out the Github Page for this project, go to <a href="https://github.com/brentvollebregt/hit-counter">github.com/brentvollebregt/hit-counter</a>.</p>
         <p>This also contains a tutorial for the project and other notes of what it is and how it works.</p>
+        <script>generateCode(); checkUrl();</script>
     </body>
 </html>
