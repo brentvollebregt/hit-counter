@@ -90,3 +90,6 @@ This is the length of the value of the cookie stored both server and client side
 
 # Inspiration
 This project was inspired by [https://github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately only publicly will record for github repos. This was my idea to expand on this and add some features.
+
+# Why Does The Anti-Refresh System Work?
+On sites like Github.com, images are cached. Even though I declare no-cache in the header, github will load the image on their side first which will cause an increase in the count no matter what as it isn't passing back the cookie it got previously (and if it did there would be a timeout for everyone).
