@@ -1,5 +1,5 @@
 DATABASE_FILENAME = 'data.db' # Location of database
-COOKIE_TIMEOUT = 600 # In seconds
+COOKIE_TIMEOUT = 60 # In seconds
 SVG_TEMPLATE = """<?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="80" height="20">
 
