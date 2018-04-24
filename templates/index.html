@@ -3,14 +3,113 @@
     <head>
         <meta charset="UTF-8">
         <title>Hit Counter</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            h1, h2 {
+                text-align: center;
+                background: #3572A5;
+                color: white;
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 60px;
+                padding: 15px;
+            }
+
+            h1 > a {
+                text-decoration: none;
+                color: white;
+            }
+
+            h2 {
+                font-size: 25px;
+                padding: 10px;
+                font-weight: 100;
+                margin: 10px 0;
+            }
+
+            body > p, body > div {
+                max-width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+
+            input {
+                text-align: center;
+            }
+
+            .head_text {
+                color: #3572A5;
+                text-align: center;
+                font-weight: bold;
+                margin-top: 13px;
+                margin-bottom: 13px;
+            }
+
+            .small_headers {
+                margin: 5px 0 2px 0;
+                font-size: 13px;
+            }
+        </style>
+        <script>
+            function generateCode() {
+                let url = document.getElementById('url').value;
+                let count = document.getElementById('count').value;
+                let countString = 'nocount';
+                if (count) {
+                    countString = 'count';
+                }
+            }
+
+            function checkUrl() {
+                let url = document.getElementById('urlCheck').value;
+                document.getElementById('urlCheckImage').src = '/nocount/tag.svg?url=' + encodeURIComponent(url);
+            }
+        </script>
     </head>
     <body>
-        <p>Hit Counter</p>
-    <!-- TODO -->
-    <!-- Create url for count/nocount -->
-    <!-- Check count for a url -->
-    <!-- Check count for a url -->
-    <!-- Tutorial -->
-    <!-- Links to pages -->
+    <h1><a href="https://github.com/brentvollebregt/hit-counter">Hit Counter</a></h1>
+        <p class="head_text">Easily count hits on a website by requesting a svg that displays a hit count.</p>
+        <div style="text-align: center;">
+            <img src="/count/tag.svg" alt="Hits">
+        </div>
+
+        <h2>Get the Image for the Website It's On</h2>
+        <p>If you want to get the hit count image for a page you can edit and you want to count, just put in this line:</p>
+        <p class="head_text">&lt;img src="<script>document.write(window.location.host)</script>/count/tag.svg" alt="Hits"&gt;</p>
+
+        <h2>Generate SVG Code For A Different Website</h2>
+        <div style="text-align: center;">
+            <input id="url" placeholder="https://github.com/brentvollebregt/hit-counter" value="https://github.com/brentvollebregt/hit-counter" style="width: 50%;">
+            <select id="count" style="width: 10%;">
+                <option>count</option>
+                <option>no-count</option>
+            </select>
+            <p class="small_headers">Image Tag</p>
+            <input id="resultImageTag" style="width: 50%;">
+            <p class="small_headers">Markdown</p>
+            <input id="resultMarkdown" style="width: 50%;">
+        </div>
+
+        <h2>Check URL Count</h2>
+        <div>
+            <input id="urlCheck" placeholder="https://github.com/brentvollebregt/hit-counter" value="https://github.com/brentvollebregt/hit-counter">
+            <button onclick="checkUrl()">Get Count</button>
+        </div>
+        <div style="margin-top: 10px;">
+            <img id="urlCheckImage" src="/nocount/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
+        </div>
+
+        <h2>Github Page</h2>
+        <p>If you want to check out the Github Page for this project, go to <a href="https://github.com/brentvollebregt/hit-counter">github.com/brentvollebregt/hit-counter</a>.</p>
+        <p>This also contains a tutorial for the project and other notes of what it is and how it works.</p>
+
+        <script>generateCode();checkUrl();</script>
     </body>
 </html>
