@@ -10,6 +10,8 @@ These is also a small method to prevent the refresh count increase issue (if you
 
 **This makes is very easy too keep track of views on static sites like Github Pages.** (can also be uses on non-static sites as a general counter)
 
+This project was inspired by [https://github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately only publicly will record for github repos. This was my idea to expand on this and add some features.
+
 # How Can I Use it?
 ## Getting an SVG
 To get an image for the current url (for example is image is being requested by www.example.com), simply get the image as you normally would:
