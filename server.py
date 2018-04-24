@@ -6,11 +6,23 @@ from flask import Flask, request, send_file, make_response, render_template
 app = Flask(__name__, static_url_path='')
 db_connection = db.DbAccess(config.DATABASE_FILENAME)
 
+def makeTextRequest(count, url, cookie):
+    """ Create a request with the count with a 200 status and give cookie back """
+    response = make_response(str(count), 200)
+    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    return response
+
+def makeSVGRequest(count, url, cookie):
+    svg = utils.getSVG(count).encode('utf-8')
+    response = make_response(svg, 200)
+    response.content_type = 'image/svg+xml'
+    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    return response
+
 @app.route("/")
 def homeRoute():
     """ Home + tool to create (nocount/count + url in url) """
     return render_template('index.html')
-
 
 @app.route("/count")
 def countRoute():
@@ -27,10 +39,7 @@ def countRoute():
     count = db_connection.getCount(url)
     db_connection.commit()
 
-    # Respond with count and status of 200 and give cookie back
-    response = make_response(str(count), 200)
-    response.set_cookie(url, cookie, expires=utils.getExpiration())
-    return response
+    return makeTextRequest(count, url, cookie)
 
 @app.route("/count/tag.svg")
 def countTagRoute():
@@ -45,11 +54,7 @@ def countTagRoute():
     count = db_connection.getCount(url)
     db_connection.commit()
 
-    svg = utils.getSVG(count).encode('utf-8')
-    response = make_response(svg, 200)
-    response.content_type = 'image/svg+xml'
-    response.set_cookie(url, cookie, expires=utils.getExpiration())
-    return response
+    return makeSVGRequest(count, url, cookie)
 
 @app.route("/nocount")
 def nocountRoute():
@@ -63,9 +68,7 @@ def nocountRoute():
     count = db_connection.getCount(url)
     db_connection.commit()
 
-    response = make_response(str(count), 200)
-    response.set_cookie(url, cookie, expires=utils.getExpiration())
-    return response
+    return makeTextRequest(count, url, cookie)
 
 @app.route("/nocount/tag.svg")
 def nocountTagRoute():
@@ -79,11 +82,7 @@ def nocountTagRoute():
     count = db_connection.getCount(url)
     db_connection.commit()
 
-    svg = utils.getSVG(count).encode('utf-8')
-    response = make_response(svg, 200)
-    response.content_type = 'image/svg+xml'
-    response.set_cookie(url, cookie, expires=utils.getExpiration())
-    return response
+    return makeSVGRequest(count, url, cookie)
 
 if __name__ == '__main__':
     ip = '127.0.0.1'
