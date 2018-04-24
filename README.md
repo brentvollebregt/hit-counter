@@ -1,6 +1,10 @@
 # Hit Counter
 Easily count hits on a website by requesting a svg that displays a hit count.
 
+<div style="text-align: center">
+    <img src="http://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">
+</div>
+
 Live demo hosted at: [hitcounter.pythonanywhere.com](http://hitcounter.pythonanywhere.com/)
 
 # What is This?
