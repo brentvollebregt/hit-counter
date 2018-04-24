@@ -9,14 +9,16 @@ db_connection = db.DbAccess(config.DATABASE_FILENAME)
 def makeTextRequest(count, url, cookie):
     """ Create a request with the count with a 200 status and give cookie back """
     response = make_response(str(count), 200)
-    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    if not cookie is None:
+        response.set_cookie(url, cookie, expires=utils.getExpiration())
     return response
 
 def makeSVGRequest(count, url, cookie):
     svg = utils.getSVG(count).encode('utf-8')
     response = make_response(svg, 200)
     response.content_type = 'image/svg+xml'
-    response.set_cookie(url, cookie, expires=utils.getExpiration())
+    if not cookie is None:
+        response.set_cookie(url, cookie, expires=utils.getExpiration())
     return response
 
 @app.route("/")
@@ -63,12 +65,9 @@ def nocountRoute():
     if url is None:
         return "", 404
 
-    cookie = utils.getCookie(request, url)
-    db_connection.clean()
     count = db_connection.getCount(url)
-    db_connection.commit()
 
-    return makeTextRequest(count, url, cookie)
+    return makeTextRequest(count, url, None)
 
 @app.route("/nocount/tag.svg")
 def nocountTagRoute():
@@ -77,12 +76,9 @@ def nocountTagRoute():
     if url is None:
         return "", 404
 
-    cookie = utils.getCookie(request, url)
-    db_connection.clean()
     count = db_connection.getCount(url)
-    db_connection.commit()
 
-    return makeSVGRequest(count, url, cookie)
+    return makeSVGRequest(count, url, None)
 
 if __name__ == '__main__':
     ip = '127.0.0.1'
