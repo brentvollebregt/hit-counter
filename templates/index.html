@@ -74,11 +74,7 @@
             function generateCode() {
                 let url = document.getElementById('url').value;
                 let count = document.getElementById('count').value;
-                let countString = 'nocount';
-                if (count) {
-                    countString = 'count';
-                }
-                let imageUrl = window.location.origin + '/' + countString + '/tag.svg?url=' + encodeURIComponent(url);
+                let imageUrl = window.location.origin + '/' + count + '/tag.svg?url=' + encodeURIComponent(url);
                 document.getElementById('resultImageTag').innerText = '<img src="' + imageUrl + '" alt="Hits">';
                 document.getElementById('resultMarkdown').innerText = '![Hits](' + imageUrl + ')';
                 document.getElementById('resultImage').src = window.location.origin + '/nocount/tag.svg?url=' + encodeURIComponent(url);
@@ -133,9 +129,9 @@
         <h2>Generate SVG Code For A Different Website</h2>
         <div style="text-align: center;">
             <input id="url" placeholder="https://github.com/brentvollebregt/hit-counter" value="https://github.com/brentvollebregt/hit-counter" style="width: 70%;" onkeyup="generateCode()">
-            <select id="count" style="width: 10%; font-size: 19px;">
+            <select id="count" style="width: 10%; font-size: 19px;" onchange="generateCode()">
                 <option>count</option>
-                <option>no-count</option>
+                <option>nocount</option>
             </select>
             <p class="small_headers">Image Tag</p>
             <p id="resultImageTag" class="head_text" style="margin-top: 0"></p>
