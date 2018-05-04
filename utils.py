@@ -4,9 +4,9 @@ import string
 import datetime
 
 
-def getSVG(count):
+def getSVG(count, width, recWidth, textX):
     """ Put the count in the pre-defined svg and return it """
-    return config.SVG_TEMPLATE.format(count=count)
+    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=recWidth, textX=textX)
 
 def getURL(request):
     """ Get the url out of a request either passed as a query parameter or taken from the referrer """
@@ -27,3 +27,18 @@ def getExpiration():
     """ Get the expiration time in seconds using defined timeout """
     expire_date = datetime.datetime.now()
     return expire_date + datetime.timedelta(seconds=config.COOKIE_TIMEOUT)
+
+def calculateSVGSizes(count):
+    """ Calculate the size of the green half based off the length of count """
+    text = str(count)
+    sizes = {
+        'width' : 80,
+        'recWidth' : 50,
+        'textX' : 55
+    }
+    if len(text) > 5:
+        sizes['width'] += 6 * (len(text) - 5)
+        sizes['recWidth'] += 6 * (len(text) - 5)
+        sizes['textX'] += 3 * (len(text) - 5)
+
+    return sizes
