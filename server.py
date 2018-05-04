@@ -1,7 +1,7 @@
 import config
 import db
 import utils
-from flask import Flask, request, send_file, make_response, render_template
+from flask import Flask, request, make_response, render_template
 
 app = Flask(__name__, static_url_path='')
 db_connection = db.DbAccess(config.DATABASE_FILENAME)
@@ -14,7 +14,8 @@ def makeTextRequest(count, url, cookie):
     return response
 
 def makeSVGRequest(count, url, cookie):
-    svg = utils.getSVG(count).encode('utf-8')
+    sizes = utils.calculateSVGSizes(count)
+    svg = utils.getSVG(count, sizes['width'], sizes['recWidth'], sizes['textX']).encode('utf-8')
     response = make_response(svg, 200)
     response.content_type = 'image/svg+xml'
     if not cookie is None:

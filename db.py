@@ -27,7 +27,7 @@ class DbAccess:
         count = self.getCount(url)
         if count == 0:
             self.cursor.execute('INSERT INTO url(url, count) VALUES(?, ?)', (url, 0))
-        # Get id of the url we are coutning
+        # Get id of the url we are counting
         self.cursor.execute('SELECT id FROM url WHERE url=?', (url, ))
         url_id = self.cursor.fetchone()[0]
         # Return if cookie value already here for the url
