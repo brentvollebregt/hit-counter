@@ -9,8 +9,9 @@ def getSVG(count, width, recWidth, textX):
     return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=recWidth, textX=textX)
 
 def getURL(request):
-    """ Get the url out of a request either passed as a query parameter or taken from the referrer """
-    return request.args.get('url', request.referrer)
+    """ Get the url out of a request either passed as a query parameter or taken from the referrer. Remove any query """
+    url = request.args.get('url', request.referrer)
+    return url.split('?')[0]
 
 def getCookie(request, url):
     """ Get the cookie out of the request relative to the url provided or generate a new value if it doesn't exist"""
