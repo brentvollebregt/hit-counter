@@ -2,6 +2,7 @@ import config
 import random
 import string
 import datetime
+from urllib.parse import urlparse
 
 
 def getSVG(count, width, recWidth, textX):
@@ -11,7 +12,8 @@ def getSVG(count, width, recWidth, textX):
 def getURL(request):
     """ Get the url out of a request either passed as a query parameter or taken from the referrer. Remove any query """
     url = request.args.get('url', request.referrer)
-    return url.split('?')[0]
+    parts = urlparse(url)
+    return parts.netloc + parts.path
 
 def getCookie(request, url):
     """ Get the cookie out of the request relative to the url provided or generate a new value if it doesn't exist"""
