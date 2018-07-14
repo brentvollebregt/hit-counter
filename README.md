@@ -73,14 +73,14 @@ from server import app as application
 ```
 
 # How it Works
-This server has been built with Flask. Calling one of the ```/count``` or ```/nocount``` methods will interact with the local sqlite3 database (file) and keep track of urls, views and the counts for urls. Data will be returned based off what is in the database at the current time.
+This server has been built with Flask. Calling one of the ```/count``` or ```/nocount``` methods will interact with the local SQLite3 database (file) and keep track of urls, views and the counts for urls. Data will be returned based off what is in the database at the current time.
 
 Cookies are used to prevent multiple counts for the same client in a specified period of time. These are simply the url as the key and a random string generated server side as the value.
 
 # Configuration
 In config.py there are a few configurations that can be made
 ### DATABASE_FILENAME
-This is the name of the sqlite3 database to be used, if it doesn't exist it will be created so you don't really need to worry about this unless you have a conflict.
+This is the name of the SQLite3 database to be used, if it doesn't exist it will be created so you don't really need to worry about this unless you have a conflict.
 
 ### COOKIE_TIMEOUT
 This is the amount of time for a cline to count as a view again. When a view is counted, the SVG/count is returned with a cookie for that site. Currently that is set at 1mins (60 seconds) but can be changed.
@@ -94,7 +94,7 @@ This is the template of the SVG returned. ```{count}``` must always be in this s
 This is the length of the value of the cookie stored both server and client side. Making this longer will stop collisions from occurring but will increase storage. Each value generated is completely random from the characters [0-9][a-z][A-Z].
 
 # Inspiration
-This project was inspired by [https://github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately only publicly will record for github repos. This was my idea to expand on this and add some features.
+This project was inspired by [https://github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately only publicly will record for GitHub repos. This was my idea to expand on this and add some features.
 
-# Why Does The Anti-Refresh System Work?
-On sites like Github.com, images are cached. Even though I declare no-cache in the header, github will load the image on their side first which will cause an increase in the count no matter what as it isn't passing back the cookie it got previously (and if it did there would be a timeout for everyone).
+# Why Does The Anti-Refresh System Not Work?
+On sites like github.com, images are cached. Even though I declare no-cache in the header, GitHub will load the image on their side first which will cause an increase in the count no matter what as it isn't passing back the cookie it got previously (and if it did there would be a timeout for everyone).
