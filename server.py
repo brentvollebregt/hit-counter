@@ -2,8 +2,10 @@ import config
 import db
 import utils
 from flask import Flask, request, make_response, render_template
+# from flask_sslify import SSLify
 
 app = Flask(__name__, static_url_path='')
+# sslify = SSLify(app)
 db_connection = db.DbAccess(config.DATABASE_FILENAME)
 
 def makeTextRequest(count, url, cookie):
