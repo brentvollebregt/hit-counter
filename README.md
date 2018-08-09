@@ -66,11 +66,13 @@ Going to the location ```/``` on the server, you will be served with a HTML page
 # Hosting Your Own Server
 Running this server is very easy, simple clone the repo (or download the files) and run ```server.py```
 
-I host this on pythonaywhere.com; to do this make sure you have cloned the repo into the filesystem and then create a new project. Modify the "WSGI configuration file" under the code header in the web tab. Change line 16 to import your script and restart the application using the green button at the top.
+I host this on pythonaywhere.com; to do this make sure you have cloned the repo into the filesystem and then create a new project. Modify the "WSGI configuration file" under the "Code" header in the "Web" tab. Change line 16 to import your script and restart the application using the green button at the top.
 
 ```python
 from server import app as application
 ```
+
+If you want to enable HTTPS on pythonaywhere, uncomment lines 5 and 8 in server.py to enable flask_sslify (is already installed on pythonaywhere, so you don't need to install it)
 
 # How it Works
 This server has been built with Flask. Calling one of the ```/count``` or ```/nocount``` methods will interact with the local SQLite3 database (file) and keep track of urls, views and the counts for urls. Data will be returned based off what is in the database at the current time.
