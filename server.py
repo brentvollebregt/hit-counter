@@ -12,20 +12,20 @@ if config.ENABLE_SSL:
     sslify = SSLify(app)
 
 
-def makeTextRequest(count, url, cookie):
+def makeTextRequest(count, url, cookie_required):
     """ Create a request with the count with a 200 status and give cookie back """
     response = make_response(str(count), 200)
-    if cookie is not None:
-        response.set_cookie(url, cookie, expires=utils.getExpiration())
+    if cookie_required:
+        response.set_cookie(url, utils.getCookieValueToSet(), expires=utils.getExpiration())
     return response
 
-def makeSVGRequest(count, url, cookie):
+def makeSVGRequest(count, url, cookie_required):
     sizes = utils.calculateSVGSizes(count)
     svg = utils.getSVG(count, sizes['width'], sizes['recWidth'], sizes['textX']).encode('utf-8')
     response = make_response(svg, 200)
     response.content_type = 'image/svg+xml'
-    if cookie is not None:
-        response.set_cookie(url, cookie, expires=utils.getExpiration())
+    if cookie_required:
+        response.set_cookie(url, utils.getCookieValueToSet(), expires=utils.getExpiration())
     return response
 
 @app.route("/")
@@ -42,12 +42,13 @@ def countRoute():
         return config.CANNOT_FIND_URL_MESSAGE, 404
 
     # Get/generate cookie, cleanup views, add a view, get the count and commit changes
-    cookie = utils.getCookie(request, url)
+    valid_cookie = utils.checkValidCookie(request, url)
     connection = db_connection.get_connection()
-    db_connection.addView(connection, url, cookie)
+    if not valid_cookie:
+        db_connection.addView(connection, url)
     count = db_connection.getCount(connection, url)
 
-    return makeTextRequest(count, url, cookie)
+    return makeTextRequest(count, url, not valid_cookie)
 
 @app.route("/count/tag.svg")
 def countTagRoute():
@@ -56,12 +57,13 @@ def countTagRoute():
     if url is None:
         return config.CANNOT_FIND_URL_MESSAGE, 404
 
-    cookie = utils.getCookie(request, url)
+    valid_cookie = utils.checkValidCookie(request, url)
     connection = db_connection.get_connection()
-    db_connection.addView(connection, url, cookie)
+    if not valid_cookie:
+        db_connection.addView(connection, url)
     count = db_connection.getCount(connection, url)
 
-    return makeSVGRequest(count, url, cookie)
+    return makeSVGRequest(count, url, not valid_cookie)
 
 @app.route("/nocount")
 def nocountRoute():
@@ -73,7 +75,7 @@ def nocountRoute():
     connection = db_connection.get_connection()
     count = db_connection.getCount(connection, url)
 
-    return makeTextRequest(count, url, None)
+    return makeTextRequest(count, url, False)
 
 @app.route("/nocount/tag.svg")
 def nocountTagRoute():
@@ -85,7 +87,7 @@ def nocountTagRoute():
     connection = db_connection.get_connection()
     count = db_connection.getCount(connection, url)
 
-    return makeSVGRequest(count, url, None)
+    return makeSVGRequest(count, url, False)
 
 @app.after_request
 def add_header(r):

@@ -3,6 +3,7 @@ import random
 import string
 import datetime
 from urllib.parse import urlparse
+import time
 
 
 def getSVG(count, width, recWidth, textX):
@@ -17,12 +18,17 @@ def getURL(request):
     parts = urlparse(url)
     return parts.netloc + parts.path
 
-def getCookie(request, url):
-    """ Get the cookie out of the request relative to the url provided or generate a new value if it doesn't exist"""
+def checkValidCookie(request, url):
+    """ Check if the cookies expiration hasn't passed """
     if url in request.cookies:
-        return request.cookies[url]
-    else:
-        return randomValue()
+        expires = float(request.cookies.get(url))
+        if expires > time.time():
+            return True
+    return False
+
+def getCookieValueToSet():
+    """ Will return the valid value for a cookie to be set """
+    return str(time.time() + config.COOKIE_TIMEOUT)
 
 def randomValue():
     """ Generate a random string from upper and lowercase letters and digits of a define length """
