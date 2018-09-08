@@ -11,7 +11,7 @@ db_connection = db.DbAccess(config.DATABASE_FILENAME)
 def makeTextRequest(count, url, cookie):
     """ Create a request with the count with a 200 status and give cookie back """
     response = make_response(str(count), 200)
-    if not cookie is None:
+    if cookie is not None:
         response.set_cookie(url, cookie, expires=utils.getExpiration())
     return response
 
@@ -20,7 +20,7 @@ def makeSVGRequest(count, url, cookie):
     svg = utils.getSVG(count, sizes['width'], sizes['recWidth'], sizes['textX']).encode('utf-8')
     response = make_response(svg, 200)
     response.content_type = 'image/svg+xml'
-    if not cookie is None:
+    if cookie is not None:
         response.set_cookie(url, cookie, expires=utils.getExpiration())
     return response
 
@@ -91,6 +91,8 @@ def add_header(r):
     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     r.headers["Pragma"] = "no-cache"
     r.headers["Expires"] = "0"
+    # Fix "No 'Access-Control-Allow-Origin' header is present on the requested resource."
+    r.headers["Access-Control-Allow-Origin"] = '*'
     return r
 
 if __name__ == '__main__':
