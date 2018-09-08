@@ -2,10 +2,10 @@
 Easily count hits on a website by requesting a svg that displays a hit count.
 
 <div style="text-align: center">
-    <img src="http://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
+    <img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
 </div>
 
-Live demo hosted at: [hitcounter.pythonanywhere.com](http://hitcounter.pythonanywhere.com/)
+Live demo hosted at: [hitcounter.pythonanywhere.com](https://hitcounter.pythonanywhere.com/)
 
 # What is This?
 This is a server that allows a client to request for a svg file that displays views for a url. This url can either be passed as a query parameter or the referrer (or referer) value in the header will be used.
@@ -19,13 +19,13 @@ These is also a small method to prevent the refresh count increase issue (if you
 To get an image for the current url (for example is image is being requested by www.example.com), simply get the image as you normally would:
 
 ```html
-<img src="http://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">
+<img src="https://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">
 ```
 
 In this example a hit would be added to the websites count on the server. To stop this form occurring but still get the svg file, use:
 
 ```html
-<img src="http://hitcounter.pythonanywhere.com/nocount/tag.svg" alt="Hits">
+<img src="https://hitcounter.pythonanywhere.com/nocount/tag.svg" alt="Hits">
 ```
 
 ## Getting the Count Raw
@@ -33,7 +33,7 @@ If you don't want the SVG file but still want the count to use in something else
 
 ```javascript
 let xmlHttp = new XMLHttpRequest();
-xmlHttp.open('GET', 'http://hitcounter.pythonanywhere.com/count', false);
+xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/count', false);
 xmlHttp.send(null);
 count = xmlHttp.responseText;
 ```
@@ -44,7 +44,7 @@ There may be circumstances that the referrer may not be sent or you may want to 
 For example, getting an svg:
 
 ```html
-<img src="http://hitcounter.pythonanywhere.com/nocount/tag.svg?url=www.example.com" alt="Hits">
+<img src="https://hitcounter.pythonanywhere.com/nocount/tag.svg?url=www.example.com" alt="Hits">
 ```
 
 And if you want to get the count:
@@ -53,10 +53,12 @@ And if you want to get the count:
 let targetUrl = 'www.example.com';
 let query = '?url=' + encodeURIComponent(targetUrl);
 let xmlHttp = new XMLHttpRequest();
-xmlHttp.open('GET', 'http://hitcounter.pythonanywhere.com/nocount', false);
+xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/nocount' + query, false);
 xmlHttp.send(null);
 count = xmlHttp.responseText;
 ```
+
+> There are also some situations where a client will not send the Referer in the header. This is a simple solution to the server not being able to find where the request came from.
 
 # Generating Links With A Tool Hosted By The Server
 Going to the location ```/``` on the server, you will be served with a HTML page that contains a tool to create the image tag or markdown element and search up a websites count.
@@ -82,12 +84,12 @@ Cookies are used to prevent multiple counts for the same client in a specified p
 # Configuration
 In config.py there are a few configurations that can be made
 ### DATABASE_FILENAME
-This is the name of the SQLite3 database to be used, if it doesn't exist it will be created so you don't really need to worry about this unless you have a conflict.
+This is the name of the SQLite3 database to be used, if it doesn't exist, it will be created. You don't need to worry about this unless you have conflicts with other applications.
 
 ### COOKIE_TIMEOUT
-This is the amount of time for a cline to count as a view again. When a view is counted, the SVG/count is returned with a cookie for that site. Currently that is set at 1mins (60 seconds) but can be changed.
+This is the amount of time for a client to count as a view again. When a view is counted, the SVG/count is returned with a cookie for that site. Currently that is set at 1min (60 seconds) but can be changed.
 
-To disable this feature simply set this to 0; the cookies stored on the server will be flushed from the database each new view.
+To disable this feature simply set this to 0; the cookies stored on the server will be flushed from the database after each new view.
 
 ### SVG_TEMPLATE
 This is the template of the SVG returned. ```{count}``` must always be in this string so that python can add the count before giving it as a response.
@@ -96,7 +98,7 @@ This is the template of the SVG returned. ```{count}``` must always be in this s
 This is the length of the value of the cookie stored both server and client side. Making this longer will stop collisions from occurring but will increase storage. Each value generated is completely random from the characters [0-9][a-z][A-Z].
 
 # Inspiration
-This project was inspired by [https://github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately only publicly will record for GitHub repos. This was my idea to expand on this and add some features.
+This project was inspired by [github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately will count GitHub repo views. This was my idea to expand on this and add some features with also making it compatible with any site.
 
 # Why Does The Anti-Refresh System Not Work?
 On sites like github.com, images are cached. Even though I declare no-cache in the header, GitHub will load the image on their side first which will cause an increase in the count no matter what as it isn't passing back the cookie it got previously (and if it did there would be a timeout for everyone).
