@@ -12,6 +12,8 @@ def getSVG(count, width, recWidth, textX):
 def getURL(request):
     """ Get the url out of a request either passed as a query parameter or taken from the referrer. Remove any query """
     url = request.args.get('url', request.referrer)
+    if url is None:
+        return None
     parts = urlparse(url)
     return parts.netloc + parts.path
 
