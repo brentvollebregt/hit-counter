@@ -74,7 +74,7 @@ I host this on pythonaywhere.com; to do this make sure you have cloned the repo 
 from server import app as application
 ```
 
-If you want to enable HTTPS on pythonaywhere, uncomment lines 5 and 8 in server.py to enable flask_sslify (is already installed on pythonaywhere, so you don't need to install it)
+> If you want to enable HTTPS on pythonaywhere, set config.ENABLE_SSL to True.
 
 ## How it Works
 This server has been built with Flask. Calling one of the ```/count``` or ```/nocount``` methods will interact with the local SQLite3 database (file) and keep track of urls, views and the counts for urls. Data will be returned based off what is in the database at the current time.

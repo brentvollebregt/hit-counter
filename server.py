@@ -2,11 +2,15 @@ import config
 import db
 import utils
 from flask import Flask, request, make_response, render_template
-# from flask_sslify import SSLify
+
 
 app = Flask(__name__, static_url_path='')
-# sslify = SSLify(app)
 db_connection = db.DbAccess(config.DATABASE_FILENAME)
+
+if config.ENABLE_SSL:
+    from flask_sslify import SSLify
+    sslify = SSLify(app)
+
 
 def makeTextRequest(count, url, cookie):
     """ Create a request with the count with a 200 status and give cookie back """
@@ -35,14 +39,13 @@ def countRoute():
     # Attempt to find any sign of a url, return 404 if we can't find anything
     url = utils.getURL(request)
     if url is None:
-        return "", 404
+        return config.CANNOT_FIND_URL_MESSAGE, 404
 
     # Get/generate cookie, cleanup views, add a view, get the count and commit changes
     cookie = utils.getCookie(request, url)
-    db_connection.clean()
-    db_connection.addView(url, cookie)
-    count = db_connection.getCount(url)
-    db_connection.commit()
+    connection = db_connection.get_connection()
+    db_connection.addView(connection, url, cookie)
+    count = db_connection.getCount(connection, url)
 
     return makeTextRequest(count, url, cookie)
 
@@ -51,13 +54,12 @@ def countTagRoute():
     """ Return svg of count and add 1 to url """
     url = utils.getURL(request)
     if url is None:
-        return "", 404
+        return config.CANNOT_FIND_URL_MESSAGE, 404
 
     cookie = utils.getCookie(request, url)
-    db_connection.clean()
-    db_connection.addView(url, cookie)
-    count = db_connection.getCount(url)
-    db_connection.commit()
+    connection = db_connection.get_connection()
+    db_connection.addView(connection, url, cookie)
+    count = db_connection.getCount(connection, url)
 
     return makeSVGRequest(count, url, cookie)
 
@@ -66,9 +68,10 @@ def nocountRoute():
     """ Return the count for a url """
     url = utils.getURL(request)
     if url is None:
-        return "", 404
+        return config.CANNOT_FIND_URL_MESSAGE, 404
 
-    count = db_connection.getCount(url)
+    connection = db_connection.get_connection()
+    count = db_connection.getCount(connection, url)
 
     return makeTextRequest(count, url, None)
 
@@ -77,9 +80,10 @@ def nocountTagRoute():
     """ Return svg of count """
     url = utils.getURL(request)
     if url is None:
-        return "", 404
+        return config.CANNOT_FIND_URL_MESSAGE, 404
 
-    count = db_connection.getCount(url)
+    connection = db_connection.get_connection()
+    count = db_connection.getCount(connection, url)
 
     return makeSVGRequest(count, url, None)
 
@@ -87,11 +91,11 @@ def nocountTagRoute():
 def add_header(r):
     """
     Disable caching - https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
+    Also fix "No 'Access-Control-Allow-Origin' header is present on the requested resource."
     """
     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     r.headers["Pragma"] = "no-cache"
     r.headers["Expires"] = "0"
-    # Fix "No 'Access-Control-Allow-Origin' header is present on the requested resource."
     r.headers["Access-Control-Allow-Origin"] = '*'
     return r
 

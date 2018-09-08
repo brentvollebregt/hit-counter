@@ -1,5 +1,5 @@
 DATABASE_FILENAME = 'data.db' # Location of database
-COOKIE_TIMEOUT = 60 # In seconds
+COOKIE_TIMEOUT = 60 * 5 # In seconds
 SVG_TEMPLATE = """<?xml version="1.0"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="20">
 <rect width="30" height="20" fill="#555"/>
@@ -12,3 +12,5 @@ SVG_TEMPLATE = """<?xml version="1.0"?>
 	</g>
 </svg>""" # Template of SVG with {count} to be provided
 RANDOM_VALUE_LENGTH = 12 # Length of cookie value (stored both server and client side)
+CANNOT_FIND_URL_MESSAGE = "Count not find a requested url"
+ENABLE_SSL = False
