@@ -1,75 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
         <title>Hit Counter</title>
-        <style>
-            body {
-                margin: 0;
-                font-family: Arial, Helvetica, sans-serif;
-                text-align: center;
-            }
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-            h1, h2 {
-                text-align: center;
-                background: #3572A5;
-                color: white;
-                margin: 0;
-            }
-
-            h1 {
-                font-size: 60px;
-                padding: 15px;
-            }
-
-            h1 > a {
-                text-decoration: none;
-                color: white;
-            }
-
-            h2 {
-                font-size: 25px;
-                padding: 10px;
-                font-weight: 100;
-                margin: 10px 0;
-            }
-
-            body > p, body > div {
-                max-width: 80%;
-                margin-left: auto;
-                margin-right: auto;
-                text-align: center;
-            }
-
-            input, select {
-                text-align: center;
-                border: 2px solid #3572A5;
-                font-size: 20px;
-                padding: 5px;
-            }
-
-            .head_text {
-                color: #3572A5;
-                text-align: center;
-                font-weight: bold;
-                margin-top: 13px;
-                margin-bottom: 13px;
-            }
-
-            .small_headers {
-                margin: 5px 0 2px 0;
-                font-size: 13px;
-                font-style: italic;
-            }
-
-            .copy_button {
-                border: 2px solid #3572A5;
-                cursor: pointer;
-                background: transparent;
-                font-size: 18px;
-                padding: 4px 50px;
-            }
-        </style>
         <script>
             function generateCode() {
                 let url = document.getElementById('url').value;
@@ -113,40 +49,85 @@
                 document.write(window.location.origin);
             }
         </script>
+        <style>
+            .o-a {overflow-x: auto;}
+            .mw-800p {max-width: 800px; margin: auto;}
+        </style>
     </head>
-    <body>
-    <h1><a href="https://github.com/brentvollebregt/hit-counter">Hit Counter</a></h1>
-        <p class="head_text">Easily count hits on a website by requesting a svg that displays a hit count.</p>
-        <div style="text-align: center;">
-            <img src="/count/tag.svg" alt="Hits">
-        </div>
+    <body class="text-center pt-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <h1><a href="https://github.com/brentvollebregt/hit-counter">Hit Counter</a></h1>
+                    <p class="lead text-muted mb-1">Easily count hits on a website by requesting a svg that displays a hit count.</p>
+                    <img src="/count/tag.svg" alt="Hits">
 
-        <h2>Get the Image for the Website It's On</h2>
-        <p>If you want to get the hit count image for a page you can edit and you want to count, just put in this line:</p>
-        <p class="head_text" id="standard">&lt;img src="<script>host()</script>/count/tag.svg" alt="Hits"&gt;</p>
-        <button class="copy_button" onclick="copyContentOf('standard')">Copy</button>
+                    <hr>
 
-        <h2>Generate SVG Code For A Different Website</h2>
-        <div style="text-align: center;">
-            <input id="url" placeholder="https://github.com/brentvollebregt/hit-counter" value="https://github.com/brentvollebregt/hit-counter" style="width: 70%;" onkeyup="generateCode()">
-            <select id="count" style="width: 10%; font-size: 19px;" onchange="generateCode()">
-                <option>count</option>
-                <option>nocount</option>
-            </select>
-            <p class="small_headers">Image Tag</p>
-            <p id="resultImageTag" class="head_text" style="margin-top: 0"></p>
-            <p class="small_headers">Markdown</p>
-            <p id="resultMarkdown" class="head_text" style="margin-top: 0"></p>
-            <div style="margin: 10px 0;">
-                <img id="resultImage" src="">
+                    <h2 class="mt-4">Get the Image for the Page It's On</h2>
+                    <p class="my-1">If you want to get the hit count image for a page you can edit and you want to count, add this line:</p>
+                    <p id="standard" class="text-primary my-0">&lt;img src="<script>host()</script>/count/tag.svg" alt="Hits"&gt;</p>
+                    <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('standard')">Copy HTML Snippet</button>
+
+                    <h2 class="mt-4">Generate SVG Code For A Different Website</h2>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-9 px-1">
+                                <input id="url" type="text" class="form-control" placeholder="https://github.com/brentvollebregt/hit-counter" value="https://github.com/brentvollebregt/hit-counter" onkeyup="generateCode()">
+                            </div>
+                            <div class="col-md-3 px-1">
+                                <select id="count" class="form-control" onchange="generateCode()">
+                                    <option>count</option>
+                                    <option>nocount</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="my-2">
+                        <img id="resultImage" src="" alt="Selected Hit Counter">
+                    </div>
+                    <p class="text-muted my-1">Image Tag</p>
+                    <p id="resultImageTag" class="text-primary my-0 o-a"></p>
+                    <p class="text-muted my-1">Markdown</p>
+                    <p id="resultMarkdown" class="text-primary my-0 o-a"></p>
+                    <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('resultImageTag')">Copy Image Tag</button>
+                    <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('resultMarkdown')">Copy Markdown</button>
+
+                    <hr>
+
+                    <h2 class="mt-4">Top 10 Domains Using This By Views</h2>
+                    <table class="table table-bordered table-sm mw-800p">
+                        <thead>
+                            <tr>
+                                <th scope="col">Domain</th>
+                                <th scope="col">Total Hits Counted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for site in top_sites %}
+                            <tr>
+                                <td><a href="//{{ site }}">{{ site }}</a></td>
+                                <td>{{ top_sites[site] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <h2 class="mt-4">About</h2>
+                    <div class="mw-800p">
+                        <p>This site allows you to request for a svg file that displays views for a url. This url can either be passed as a query parameter or the referrer (or referer) value in the header will be used. </p>
+                        <p>These is also a small method to prevent the refresh count increase issue (if you want to call it an issue, I see it as annoying) which uses cookies.</p>
+                        <p><strong>This makes is very easy too keep track of views on static sites like Github Pages.</strong> (can also be uses on non-static sites as a general counter)</p>
+                        <p>The source code of this server can be found at <a href="https://github.com/brentvollebregt/hit-counter">github.com/brentvollebregt/hit-counter</a>.</p>
+                    </div>
+                </div>
             </div>
-            <button class="copy_button" onclick="copyContentOf('resultImageTag')">Copy Image Tag</button>
-            <button class="copy_button" onclick="copyContentOf('resultMarkdown')">Copy Markdown</button>
         </div>
 
-        <h2>Github Page</h2>
-        <p>If you want to check out the Github Page for this project, go to <a href="https://github.com/brentvollebregt/hit-counter">github.com/brentvollebregt/hit-counter</a>.</p>
-        <p>This also contains a tutorial for the project and other notes of what it is and how it works.</p>
         <script>generateCode();</script>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </body>
 </html>
