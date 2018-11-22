@@ -67,5 +67,8 @@ class DbAccess:
         # Sort the domains by hits
         sorted_sites = sorted(site_counts, key=lambda x: site_counts[x], reverse=True)
 
-        # Return the top amount requested as a dict
-        return {domain: site_counts[domain] for domain in sorted_sites[:amount]}
+        # Return sorted domains and their values, this allows for lower Python version support
+        return {
+            'domains': sorted_sites[:amount],
+            'values': {site: site_counts[site] for site in site_counts}
+        }

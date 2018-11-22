@@ -104,10 +104,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for site in top_sites %}
+                            {% for site in top_sites['domains'] %}
                             <tr>
                                 <td><a href="//{{ site }}">{{ site }}</a></td>
-                                <td>{{ top_sites[site] }}</td>
+                                <td>{{ top_sites['values'][site] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
