@@ -106,7 +106,7 @@
                         <tbody>
                             {% for site in top_sites['domains'] %}
                             <tr>
-                                <td><a href="//{{ site }}">{{ site }}</a></td>
+                                <td style="word-break: break-all;"><a href="//{{ site }}">{{ site }}</a></td>
                                 <td>{{ top_sites['values'][site] }}</td>
                             </tr>
                             {% endfor %}
