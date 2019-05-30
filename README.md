@@ -38,6 +38,17 @@ xmlHttp.send(null);
 count = xmlHttp.responseText;
 ```
 
+#### Using Ajax
+
+```javascript
+let targetUrl = window.location.href;
+$.ajax('https://hitcounter.pythonanywhere.com/count',{
+    data:{url: targetUrl},
+}).then(count => console.log('Count:' + count));
+```
+
+> Do not use `data: {url: encodeURIComponent(targetUrl)}` as Ajax will encode the string (url) for you. Doing this will encode the url twice which will then only be decoded on the server once (this can lead to broken tags in the future).
+
 ### Getting a Count For a Site That Isn't Me
 There may be circumstances that the referrer may not be sent or you may want to request a SVG or count for another site. To do this, add a query with ```url``` as the name and the url you want to get (encoded obviously).
 
