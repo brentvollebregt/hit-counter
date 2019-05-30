@@ -21,7 +21,7 @@ def makeTextRequest(count, url, cookie_required):
 
 def makeSVGRequest(count, url, cookie_required):
     sizes = utils.calculateSVGSizes(count)
-    svg = utils.getSVG(count, sizes['width'], sizes['recWidth'], sizes['textX']).encode('utf-8')
+    svg = utils.getSVG(count, sizes['width'], sizes['recWidth'], sizes['textX'], url).encode('utf-8')
     response = make_response(svg, 200)
     response.content_type = 'image/svg+xml'
     if cookie_required:

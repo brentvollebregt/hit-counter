@@ -6,9 +6,9 @@ from urllib.parse import urlparse
 import time
 
 
-def getSVG(count, width, recWidth, textX):
+def getSVG(count, width, recWidth, textX, url):
     """ Put the count in the pre-defined svg and return it """
-    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=recWidth, textX=textX)
+    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=recWidth, textX=textX, url=url)
 
 def getURL(request):
     """ Get the url out of a request either passed as a query parameter or taken from the referrer. Remove any query """
