@@ -13,6 +13,7 @@ SVG_TEMPLATE = """<?xml version="1.0"?>
 	    <text x="15" y="14">hits</text>
 	    <text x="{textX}" y="14">{count}</text>
 	</g>
+<!-- This count is for the url: {url} -->
 </svg>"""
 # Length of cookie value (stored client side). Literally just the cookie size.
 RANDOM_VALUE_LENGTH = 12
