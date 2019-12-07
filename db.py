@@ -10,6 +10,7 @@ class DbAccess:
         """ Setup connection to file and create tables if they don't exist"""
         self.filename = filename
         connection = lite.connect(filename)
+        connection.execute('pragma journal_mode=wal')
         cursor = connection.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS url (id INTEGER PRIMARY KEY, url VARCHAR(256), count INTEGER);')
 
