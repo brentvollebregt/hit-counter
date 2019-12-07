@@ -77,7 +77,10 @@ Going to the location `/` on the server, you will be served with a HTML page tha
 ![Interface](https://nitratine.net/post-assets/hit-counter/interface.png)
 
 ## Hosting Your Own Server
-Running this server is very easy, simple clone the repo (or download the files) and run `server.py`.
+- Clone the repo: `git clone https://github.com/brentvollebregt/hit-counter.git`
+- cd into the repo: `cd hit-counter`
+- Install requirements: `python -m pip install -r requirements.txt`
+- Run the server: `python server.py`
 
 I host this on [pythonanywhere.com](https://hitcounter.pythonanywhere.com/); to do this make sure you have cloned the repo into the filesystem and then create a new project. Modify the "WSGI configuration file" under the "Code" header in the "Web" tab. Change line 16 to import your script and restart the application using the green button at the top.
 
