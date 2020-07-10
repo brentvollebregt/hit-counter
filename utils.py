@@ -4,7 +4,7 @@ import string
 import datetime
 from urllib.parse import urlparse
 import time
-
+import re
 
 def getSVG(count, width, recWidth, textX, url):
     """ Put the count in the pre-defined svg and return it """
@@ -17,6 +17,15 @@ def getURL(request):
         return None
     parts = urlparse(url)
     return parts.netloc + parts.path
+
+def checkURLWhitelist(url):
+    if not len(config.URL_WHITELIST_RE):
+        return True
+
+    for reg in config.URL_WHITELIST_RE:
+        if re.match(reg, url) is not None:
+            return True
+    return False
 
 def checkValidCookie(request, url):
     """ Check if the cookies expiration hasn't passed """
