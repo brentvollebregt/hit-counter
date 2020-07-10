@@ -48,7 +48,11 @@ trap finish SIGHUP SIGINT SIGQUIT SIGTERM ERR
 lock
 while :;do
    status "Starting backup"
-  /usr/local/bin/sqlite-to-s3.sh backup
+   if [[ ! -z $AWS_ACCESS_KEY_ID && ! -z $AWS_SECRET_ACCESS_KEY ]]; then
+     /usr/local/bin/sqlite-to-s3.sh backup
+   else
+     status "==> NO AWS credentials, backup skipped!"
+   fi
    status "DONE."
    status "Next backup in $BKPINTERVAL seconds..."
    sleep "$BKPINTERVAL"
