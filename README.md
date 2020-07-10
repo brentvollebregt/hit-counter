@@ -96,6 +96,79 @@ from server import app as application
 
 > Alternatively these config values can be manually set in `config.py`.
 
+## Persistent SQLite Storage to S3 & Docker
+
+Backup sqlite db file in & out S3 compatible storage provider:
+
+* Restore from S3 upon startup of container
+* Periodic backup from inside conainer into S3
+
+S3 backup based on [docker-sqlite-to-s3](https://github.com/jacobtomlinson/docker-sqlite-to-s3)
+
+## Docker
+
+### Build
+
+```
+docker build -t hitcounter .
+```
+
+### Run
+
+```
+docker run --rm -ti -p 80:80 -e S3_BUCKET=sqlite -e AWS_PROFILE=wasabi -e AWS_ACCESS_KEY_ID="X" -e AWS_SECRET_ACCESS_KEY="Y" hitcounter
+```
+
+Demo comes with wasabi example endpoints, provide custom config via
+```
+-v $PWD/.aws:/root/.aws
+```
+
+## Demo Log
+
+### Auto restore on startup
+
+```
+2020-07-10 18:37:46,385 INFO spawned: 'uwsgi' with pid 10
+==> AWS CREDS DETECTED
+
+Downloading latest backup from S3
+download: s3://sqlite/latest.bak to ./data.db.bak
+Downloaded
+Running restore
+Successfully restored
+Done
+[uWSGI] getting INI configuration from /app/uwsgi.ini
+*** Starting uWSGI 2.0.18 (64bit) on [Fri Jul 10 18:37:47 2020] ***
+```
+
+### Auto backup from within container
+
+```
+# supervisorctl tail sqlbackup
+
+[2020-07-10T18:13:35+0000] (sqlitebackup.sh): Initial 30s delay...
+[2020-07-10T18:14:05+0000] (sqlitebackup.sh): Starting backup
+
+Backing up /app/data.db to /app/data.db.bak
+Sending file to S3
+delete: s3://sqlite/latest.bak
+Removed latest backup from S3
+Completed 128 Bytes/128 Bytes (1.2 KiB/s) with 1 file(s) remaining
+upload: ./data.db.bak to s3://sqlite/latest.bak
+Backup file copied to s3://sqlite/latest.bak
+{
+    "CopyObjectResult": {
+        "ETag": "\"a36e15e4ca4956c9eb102ed0b17ab570\"",
+        "LastModified": "2020-07-10T18:14:08.000Z"
+    }
+}
+Backup file copied to s3://sqlite/20200710181405.bak
+Done
+[2020-07-10T18:14:07+0000] (sqlitebackup.sh): DONE.
+[2020-07-10T18:14:07+0000] (sqlitebackup.sh): Next backup in 900 seconds...
+```
+
 ## Inspiration
 This project was inspired by [github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately will count GitHub repo views. This was my idea to expand on this and add some features with also making it compatible with any site.
 
