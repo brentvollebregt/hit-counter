@@ -113,9 +113,11 @@ docker build -t hitcounter .
 docker run --rm -ti -p 80:80 -e S3_BUCKET=sqlite -e AWS_PROFILE=wasabi -e AWS_ACCESS_KEY_ID="X" -e AWS_SECRET_ACCESS_KEY="Y" hitcounter
 ```
 
-Demo comes with wasabi example endpoints, provide custom config via
+Demo comes with wasabi example endpoints, provide custom config via additional args
+
 ```
 -v $PWD/.aws:/root/.aws
+-e BKPINTERVAL=900 # DB Backup to S3 interval in seconds
 ```
 
 ## Demo Log
