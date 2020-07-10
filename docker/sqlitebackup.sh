@@ -46,7 +46,6 @@ finish() {
 trap finish SIGHUP SIGINT SIGQUIT SIGTERM ERR
 
 lock
-status '-r invoked'
 while :;do
    status "Starting backup"
   /usr/local/bin/sqlite-to-s3.sh backup
