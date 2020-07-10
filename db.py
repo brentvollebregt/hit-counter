@@ -4,7 +4,6 @@ import config
 from collections import defaultdict
 import re
 
-
 class DbAccess:
     """ This provides access to the database to keep track of urls and views """
     def __init__(self, filename):
@@ -49,28 +48,15 @@ class DbAccess:
 
     def getTopSites(self, connection, amount=10):
         """ Get the top domains using this tool by hits. Ignore specified domains """
-        # Select all urls and counts
-        cursor = connection.cursor()
-        cursor.execute('select url, count from url')
-        urls_and_counts = cursor.fetchall()
+        top_urls = self.getTopUrls(connection, 2147483647)
 
         # Get total hits per domain
         site_counts = defaultdict(int)
-        for row in urls_and_counts:
-            if row[0] == b'':
-                continue
+        for url in top_urls['urls']:
             # Get the domain - part before the first '/'
-            domain = row[0].split('/')[0]
-            # Check if domain is on the ignore list
-            on_ignore = False
-            for regex in config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH:
-                if re.match(regex, domain) is not None:
-                    on_ignore = True
-                    break
-            if on_ignore:
-                continue
+            domain = url.split('/')[0]
             # Add hit counts to the domain
-            site_counts[domain] += row[1]
+            site_counts[domain] += top_urls['values'][url]
 
         # Sort the domains by hits
         sorted_sites = sorted(site_counts, key=lambda x: site_counts[x], reverse=True)
@@ -79,4 +65,37 @@ class DbAccess:
         return {
             'domains': sorted_sites[:amount],
             'values': {site: site_counts[site] for site in site_counts}
+        }
+
+    def getTopUrls(self, connection, amount=10):
+        """ Get the top urls using this tool by hits. Ignore specified domains """
+        # Select all urls and counts
+        cursor = connection.cursor()
+        cursor.execute(f'select url, count from url order by count desc limit {amount + len(config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH)}')
+        urls_and_counts = cursor.fetchall()
+
+        # Get total hits per domain
+        url_counts = defaultdict(int)
+        for row in urls_and_counts:
+            url = row[0]
+            if url == b'':
+                continue
+            # Check if url is on the ignore list
+            on_ignore = False
+            for regex in config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH:
+                if re.match(regex, url) is not None:
+                    on_ignore = True
+                    break
+            if on_ignore:
+                continue
+            # Add hit counts to the domain
+            url_counts[row[0]] += row[1]
+
+        # Sort the urls by hits
+        sorted_urls = sorted(url_counts, key=lambda x: url_counts[x], reverse=True)
+
+        # Return sorted domains and their values, this allows for lower Python version support
+        return {
+            'urls': sorted_urls[:amount],
+            'values': {url: url_counts[url] for url in url_counts}
         }

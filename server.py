@@ -32,7 +32,11 @@ def makeSVGRequest(count, url, cookie_required):
 def homeRoute():
     """ Home + tool to create (nocount/count + url in url) """
     connection = db_connection.get_connection()
-    return render_template('index.html', top_sites=db_connection.getTopSites(connection, 10))
+    return render_template(
+        'index.html',
+        top_sites=db_connection.getTopSites(connection, 10),
+        top_urls=db_connection.getTopUrls(connection, 10)
+    )
 
 @app.route("/count")
 def countRoute():

@@ -95,8 +95,8 @@
 
                     <hr>
 
-                    <h2 class="mt-4">Top 10 Domains Using This By Views</h2>
-                    <table class="table table-bordered table-sm mw-800p">
+                    <h2 class="my-4">Top 10 Domains Using This By Views</h2>
+                    <table class="table table-bordered table-sm mw-800p mb-4">
                         <thead>
                             <tr>
                                 <th scope="col">Domain</th>
@@ -108,6 +108,26 @@
                             <tr>
                                 <td style="word-break: break-all;"><a href="//{{ site }}">{{ site }}</a></td>
                                 <td>{{ top_sites['values'][site] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <hr>
+
+                    <h2 class="my-4">Top 10 URLs Using This By Views</h2>
+                    <table class="table table-bordered table-sm mw-800p mb-4">
+                        <thead>
+                            <tr>
+                                <th scope="col">URL</th>
+                                <th scope="col">Total Hits Counted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for url in top_urls['urls'] %}
+                            <tr>
+                                <td style="word-break: break-all;"><a href="//{{ url }}">{{ url }}</a></td>
+                                <td>{{ top_urls['values'][url] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
