@@ -48,7 +48,7 @@ class DbAccess:
 
     def getTopSites(self, connection, amount=10):
         """ Get the top domains using this tool by hits. Ignore specified domains """
-        top_urls = self.getTopUrls(connection, 2147483647)
+        top_urls = self.getTopUrls(connection, -1)
 
         # Get total hits per domain
         site_counts = defaultdict(int)
@@ -70,6 +70,8 @@ class DbAccess:
     def getTopUrls(self, connection, amount=10):
         """ Get the top urls using this tool by hits. Ignore specified domains """
         # Select all urls and counts
+        if amount < 0:
+            amount = 2147483647
         cursor = connection.cursor()
         cursor.execute(f'select url, count from url order by count desc limit {amount + len(config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH)}')
         urls_and_counts = cursor.fetchall()
