@@ -1,5 +1,5 @@
 # Hit Counter
-Easily count hits on a website by requesting a svg that displays a hit count.
+Easily count hits on a website by requesting a SVG that displays a hit count.
 
 <div style="text-align: center">
     <img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
@@ -8,21 +8,21 @@ Easily count hits on a website by requesting a svg that displays a hit count.
 Live demo hosted at: [hitcounter.pythonanywhere.com](https://hitcounter.pythonanywhere.com/)
 
 ## What is This?
-This is a server that allows a client to request for a svg file that displays views for a url. This url can either be passed as a query parameter or the referrer (or referer) value in the header will be used.
+This is a server that allows a client to request for an SVG file that displays views for a URL. This URL can either be passed as a query parameter or the referrer (or referer) value in the header will be used.
 
 A small method to help prevent the count increasing after short consecutive page loads is included which uses cookies to check if the user has made the request recently.
 
-**This makes is very easy too keep track of views on static sites like Github Pages.** *It can also be uses on non-static sites as a general counter.*
+**This makes it very easy to keep track of views on static sites like Github Pages.** *It can also be used on non-static sites as a general counter.*
 
 ## How Can I Use it?
 ### Getting an SVG
-To get an image for the current url (for example is image is being requested by www.example.com), simply get the image as you normally would:
+To get an image for the current URL (for example is image is being requested by www.example.com), simply get the image as you normally would:
 
 ```html
 <img src="https://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">
 ```
 
-In this example a hit would be added to the websites count on the server. To stop this form occurring but still get the svg file, use:
+In this example, a hit would be added to the websites count on the server. To stop this from occurring but still get the SVG file, use:
 
 ```html
 <img src="https://hitcounter.pythonanywhere.com/nocount/tag.svg" alt="Hits">
@@ -50,9 +50,9 @@ $.ajax('https://hitcounter.pythonanywhere.com/count',{
 > Do not use `data: {url: encodeURIComponent(targetUrl)}` as Ajax will encode the string (url) for you. Doing this will encode the url twice which will then only be decoded on the server once (this can lead to broken tags in the future).
 
 ### Getting a Count For a Site That Isn't Me
-There may be circumstances that the referrer may not be sent or you may want to request a SVG or count for another site. To do this, set `url` to the url you want to get (make sure to encoded the value).
+There may be circumstances that the referrer may not be sent or you may want to request an SVG or count for another site. To do this, set `url` to the URL you want to get (make sure to encoded the value).
 
-For example, getting an svg:
+For example, getting an SVG:
 
 ```html
 <img src="https://hitcounter.pythonanywhere.com/nocount/tag.svg?url=www.example.com" alt="Hits">
@@ -72,7 +72,7 @@ count = xmlHttp.responseText;
 > There are also some situations where a client will not send the Referer in the header. This is a simple solution to the server not being able to find where the request came from.
 
 ## Generating Links With A Tool Hosted By The Server
-Going to the location `/` on the server, you will be served with a HTML page that contains a tool to create the image tag or markdown element and search up a websites count.
+Going to the location `/` on the server, you will be served with an HTML page that contains a tool to create the image tag or markdown element and search up a websites count.
 
 ![Interface](https://nitratine.net/posts/hit-counter/interface.png)
 
@@ -88,7 +88,13 @@ I host this on [pythonanywhere.com](https://hitcounter.pythonanywhere.com/); to 
 from server import app as application
 ```
 
-> If you want to enable HTTPS on pythonaywhere, set config.ENABLE_SSL to True.
+> If you want to enable HTTPS on pythonaywhere, set config.ENABLE_SSL in `config.py` to True.
+
+## Server Configuration
+- Enable SSL: Set an environment variable `ENABLE_SSL` to `true`.
+- Change Database location: Set an environment variable `DATABASE_FILE_PATH` to the file path of the database. 
+
+> Alternatively these config values can be manually set in `config.py`.
 
 ## Inspiration
 This project was inspired by [github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately will count GitHub repo views. This was my idea to expand on this and add some features with also making it compatible with any site.

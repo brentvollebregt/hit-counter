@@ -32,7 +32,7 @@ def getCookieValueToSet():
 
 def randomValue():
     """ Generate a random string from upper and lowercase letters and digits of a define length """
-    return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(config.RANDOM_VALUE_LENGTH)])
+    return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(config.COOKIE_RANDOM_VALUE_LENGTH)])
 
 def getExpiration():
     """ Get the expiration time in seconds using defined timeout """
