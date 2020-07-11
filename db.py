@@ -48,7 +48,7 @@ class DbAccess:
 
     def getTopSites(self, connection, amount=10):
         """ Get the top domains using this tool by hits. Ignore specified domains """
-        top_urls = self.getTopUrls(connection, -1)
+        top_urls = self.getTopUrls(connection, None)
 
         # Get total hits per domain
         site_counts = defaultdict(int)
