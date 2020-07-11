@@ -36,7 +36,7 @@ FORBIDDEN_URL_MESSAGE = "Requested url is not whitelisted"
 TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [
     r'192\.168\.\d{1,3}\.\d{1,3}',
     r'127\.0\.\d{1,3}\.\d{1,3}',
-	r'^$'
+    r'^$'
 ]
 
 # Whitelist of URL patterns to track
