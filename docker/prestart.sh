@@ -23,6 +23,5 @@ if [[ ! -z $AWS_ACCESS_KEY_ID ]] && [[ ! -z $AWS_SECRET_ACCESS_KEY ]]; then
     /usr/local/bin/sqlite-to-s3.sh restore
   else
    status "LOCAL DB FOUND at $DATABASE_PATH!";
-   status $(ls -la /app/data)
   fi
 fi
