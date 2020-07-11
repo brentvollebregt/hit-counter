@@ -4,8 +4,8 @@ COPY . /app
 
 COPY docker/.aws /root/.aws
 COPY docker/sqlitebackup.sh /usr/local/bin/
-COPY docker/sqlrestoreuwsgi.sh /usr/local/bin/
 COPY docker/supervisor.d/ /etc/supervisor.d/
+COPY docker/prestart.sh /app/.
 
 RUN chmod 755 /usr/local/bin/sq*
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-: ${DATABASE_PATH:="/app/data/data.db"}
+: ${DATABASE_FILE_PATH:="/app/data/data.db"}
 : ${S3_BUCKET:="sqlite"}
 
 set -e -o pipefail
 
-export DATABASE_PATH S3_BUCKET
+export DATABASE_PATH=$DATABASE_FILE_PATH S3_BUCKET
 
 err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] ($PROGNAME): ERROR: $@" >&2
