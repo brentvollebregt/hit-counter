@@ -132,8 +132,9 @@ Demo comes with wasabi example endpoints, provide custom config / db via additio
 ### Auto restore on startup
 
 ```
-2020-07-10 18:37:46,385 INFO spawned: 'uwsgi' with pid 10
-==> AWS CREDS DETECTED
+Checking for script in /app/prestart.sh
+Running script /app/prestart.sh
+[2020-07-11T05:59:23+0000] (): ==> AWS CREDS DETECTED
 
 Downloading latest backup from S3
 download: s3://sqlite/latest.bak to ./data.db.bak
@@ -141,8 +142,8 @@ Downloaded
 Running restore
 Successfully restored
 Done
-[uWSGI] getting INI configuration from /app/uwsgi.ini
-*** Starting uWSGI 2.0.18 (64bit) on [Fri Jul 10 18:37:47 2020] ***
+
+*** Starting uWSGI 2.0.18 (64bit) on [Sat Jul 11 05:59:25 2020] ***
 ```
 
 ### Auto backup from within container
