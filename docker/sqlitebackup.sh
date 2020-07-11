@@ -7,13 +7,13 @@ shopt -s nullglob dotglob
 PROGNAME=$(basename $0)
 
 # Provide an option to override values via env variables
-: ${BKPINTERVAL:="900"}
+: ${BKPINTERVAL:="60"}
 : ${LOCK_FD:="200"}
 : ${LOCK_FILE:="/var/lock/${PROGNAME}.lock"}
-: ${S3_BUCKET:="sqlite"}
-: ${DATABASE_PATH:="/app/data.db"}
 
-export S3_BUCKET DATABASE_PATH
+
+export S3_BUCKET="sqlite"
+export DATABASE_PATH="/app/data.db"
 
 err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] ($PROGNAME): ERROR: $@" >&2
@@ -46,9 +46,14 @@ finish() {
 trap finish SIGHUP SIGINT SIGQUIT SIGTERM ERR
 
 lock
+
 while :;do
    status "Starting backup"
-  /usr/local/bin/sqlite-to-s3.sh backup
+   if [[ ! -z $AWS_ACCESS_KEY_ID && ! -z $AWS_SECRET_ACCESS_KEY ]]; then
+     /usr/local/bin/sqlite-to-s3.sh backup
+   else
+     status "==> NO AWS credentials, backup skipped!"
+   fi
    status "DONE."
    status "Next backup in $BKPINTERVAL seconds..."
    sleep "$BKPINTERVAL"
