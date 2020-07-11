@@ -31,3 +31,4 @@ ENABLE_SSL = os.getenv('ENABLE_SSL', 'false').lower() == 'true'
 
 # Regular expressions to ignore when getting top sites
 TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [r'192\.168\.\d{1,3}\.\d{1,3}', r'127\.0\.\d{1,3}\.\d{1,3}', r'^$']
+
