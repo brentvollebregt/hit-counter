@@ -16,4 +16,4 @@ RUN cd /usr/local/bin && wget https://raw.githubusercontent.com/fluential/docker
 RUN aws configure set plugins.endpoint awscli_plugin_endpoint
 
 RUN pip install -r /app/requirements.txt
-VOLUME /app/data.db
+VOLUME /app/data/

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-: ${DATABASE_PATH:="/app/data.db"}
+: ${DATABASE_PATH:="/app/data/data.db"}
 : ${S3_BUCKET:="sqlite"}
 
 set -e -o pipefail

@@ -1,7 +1,7 @@
 import os
 
 # Location of database
-DATABASE_FILE_PATH = os.path.abspath(os.getenv('DATABASE_FILE_PATH', 'data.db'))
+DATABASE_FILE_PATH = os.path.abspath(os.getenv('DATABASE_FILE_PATH', 'data/data.db'))
 
 # Amount of time before another view by the same user will count
 COOKIE_TIMEOUT = 60 * 5

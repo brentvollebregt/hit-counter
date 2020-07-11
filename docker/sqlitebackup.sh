@@ -13,7 +13,7 @@ PROGNAME=$(basename $0)
 
 
 export S3_BUCKET="sqlite"
-export DATABASE_PATH="/app/data.db"
+export DATABASE_PATH="/app/data/data.db"
 
 err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] ($PROGNAME): ERROR: $@" >&2
