@@ -127,14 +127,14 @@ Demo comes with wasabi example endpoints, provide custom config / db via additio
 -e BKPINTERVAL=900 # DB Backup to S3 interval in seconds
 ```
 
-### Persistent docker volume
+### Persistent Docker volume
 
 ```
 docker create --name hitcounter-data hitcounter
 ```
 
 ```
-docker run --rm -ti --volumes-from hitcounter-data -p 80:80 -e AWS_PROFILE=wasabi -e AWS_ACCESS_KEY_ID="NZ5LDQ30MX8VXS9MJRNK" -e AWS_SECRET_ACCESS_KEY="sCk8Xm1IHghGyt70GAp1jCrLJKHa7Pf8u4Ym9DMf" hitcounter
+docker run --rm -ti --volumes-from hitcounter-data -p 80:80 -e AWS_PROFILE=wasabi -e AWS_ACCESS_KEY_ID="X" -e AWS_SECRET_ACCESS_KEY="Y" hitcounter
 ```
 
 ## Demo Log

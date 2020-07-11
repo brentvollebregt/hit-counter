@@ -10,10 +10,10 @@ PROGNAME=$(basename $0)
 : ${BKPINTERVAL:="60"}
 : ${LOCK_FD:="200"}
 : ${LOCK_FILE:="/var/lock/${PROGNAME}.lock"}
+: ${S3_BUCKET:="sqlite"}
+: ${DATABASE_PATH:="/app/data/data.db"}
 
-
-export S3_BUCKET="sqlite"
-export DATABASE_PATH="/app/data/data.db"
+export S3_BUCKET DATABASE_PATH
 
 err() {
   echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')] ($PROGNAME): ERROR: $@" >&2
