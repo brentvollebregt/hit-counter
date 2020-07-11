@@ -52,7 +52,7 @@ sleep 30
 
 while :;do
    status "Starting backup"
-   if [[ ! -z $AWS_ACCESS_KEY_ID && ! -z $AWS_SECRET_ACCESS_KEY ]]; then
+   if [[ ! -z $AWS_ACCESS_KEY_ID ]] && [[ ! -z $AWS_SECRET_ACCESS_KEY ]]; then
      /usr/local/bin/sqlite-to-s3.sh backup
    else
      status "==> NO AWS credentials, backup skipped!"
