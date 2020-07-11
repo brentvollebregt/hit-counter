@@ -1,3 +1,4 @@
+import os
 import sqlite3 as lite
 import config
 from collections import defaultdict
@@ -9,6 +10,12 @@ class DbAccess:
     def __init__(self, filename):
         """ Setup connection to file and create tables if they don't exist"""
         self.filename = filename
+
+        # Create folder for database file if it doesn't already exist
+        if not os.path.exists(os.path.dirname(filename)):
+            print('WARN: The parent directory for ' + filename + ' does not exist so it will be created.')
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+
         connection = lite.connect(filename)
         connection.execute('pragma journal_mode=wal')
         cursor = connection.cursor()

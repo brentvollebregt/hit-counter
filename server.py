@@ -5,7 +5,7 @@ from flask import Flask, request, make_response, render_template
 
 
 app = Flask(__name__, static_url_path='')
-db_connection = db.DbAccess(config.DATABASE_FILENAME)
+db_connection = db.DbAccess(config.DATABASE_FILE_PATH)
 
 if config.ENABLE_SSL:
     from flask_sslify import SSLify
