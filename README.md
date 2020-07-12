@@ -96,6 +96,9 @@ from server import app as application
 
 > Alternatively these config values can be manually set in `config.py`.
 
+### Domain whitelisting
+You can configure the server to only count hits to domains matching a certain pattern. To do so, add regular expression entries to `URL_WHITELIST_RE` in `config.py`, e.g. `r'github\.com'`.
+
 ## Inspiration
 This project was inspired by [github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately will count GitHub repo views. This was my idea to expand on this and add some features with also making it compatible with any site.
 
