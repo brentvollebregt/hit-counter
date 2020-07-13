@@ -34,8 +34,10 @@ def homeRoute():
     connection = db_connection.get_connection()
     return render_template(
         'index.html',
-        top_sites=db_connection.getTopSites(connection, 10),
-        top_urls=db_connection.getTopUrls(connection, 10)
+        top_sites=db_connection.getTopSites(connection, config.NUM_TOP_DOMAINS),
+        top_urls=db_connection.getTopUrls(connection, config.NUM_TOP_URLS),
+        show_sites=config.NUM_TOP_DOMAINS > 0,
+        show_urls=config.NUM_TOP_URLS > 0
     )
 
 @app.route("/count")

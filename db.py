@@ -84,7 +84,7 @@ class DbAccess:
             on_ignore = False
             for regex in config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH:
                 # Only match against the domain part
-                if re.match(regex, url.split()[0]) is not None:
+                if re.match(regex, url.split('/')[0]) is not None:
                     on_ignore = True
                     break
             if on_ignore:

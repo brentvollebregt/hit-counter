@@ -95,6 +95,7 @@
 
                     <hr>
 
+                {% if show_sites %}
                     <h2 class="my-4">Top 10 Domains Using This By Views</h2>
                     <table class="table table-bordered table-sm mw-800p mb-4">
                         <thead>
@@ -114,7 +115,9 @@
                     </table>
 
                     <hr>
+                {% endif %}
 
+                {% if show_urls %}
                     <h2 class="my-4">Top 10 URLs Using This By Views</h2>
                     <table class="table table-bordered table-sm mw-800p mb-4">
                         <thead>
@@ -132,6 +135,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                {% endif %}
 
                     <h2 class="mt-4">About</h2>
                     <div class="mw-800p">
