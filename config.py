@@ -33,7 +33,6 @@ CANNOT_FIND_URL_MESSAGE = "Count not find a requested url"
 FORBIDDEN_URL_MESSAGE = "Requested url is not whitelisted"
 
 # Regular expressions to ignore when getting top sites
-<<<<<<< HEAD
 TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [
     r'192\.168\.\d{1,3}\.\d{1,3}',
     r'127\.0\.\d{1,3}\.\d{1,3}',
@@ -43,5 +42,4 @@ TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [
 # Whitelist of URL patterns to track
 # Any URL will be allowed if list is empty
 URL_WHITELIST_RE = [
-]
-TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [r'192\.168\.\d{1,3}\.\d{1,3}', r'127\.0\.\d{1,3}\.\d{1,3}', r'^$']
+]%

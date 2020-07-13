@@ -99,6 +99,7 @@ from server import app as application
 ### Domain whitelisting
 You can configure the server to only count hits to domains matching a certain pattern. To do so, add regular expression entries to `URL_WHITELIST_RE` in `config.py`, e.g. `r'github\.com'`.
 
+
 ## Docker
 
 ### Build
@@ -191,6 +192,7 @@ Done
 [2020-07-10T18:14:07+0000] (sqlitebackup.sh): DONE.
 [2020-07-10T18:14:07+0000] (sqlitebackup.sh): Next backup in 900 seconds...
 ```
+
 
 ## Inspiration
 This project was inspired by [github.com/dwyl/hits](https://github.com/dwyl/hits) which is a "General purpose hits (page views) counter" which unfortunately will count GitHub repo views. This was my idea to expand on this and add some features with also making it compatible with any site.
