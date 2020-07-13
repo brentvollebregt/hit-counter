@@ -23,11 +23,25 @@ SVG_TEMPLATE = """<?xml version="1.0"?>
 <!-- This count is for the url: {url} -->
 </svg>"""
 
-# Message to return on a 404
-CANNOT_FIND_URL_MESSAGE = "Could not find a requested url"
-
 # Enable SSL (set ENABLE_SSL=true to enable)
 ENABLE_SSL = os.getenv('ENABLE_SSL', 'false').lower() == 'true'
 
+# Message to return on a 404
+CANNOT_FIND_URL_MESSAGE = "Count not find a requested url"
+
+# Message to return on a 403
+FORBIDDEN_URL_MESSAGE = "Requested url is not whitelisted"
+
 # Regular expressions to ignore when getting top sites
+<<<<<<< HEAD
+TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [
+    r'192\.168\.\d{1,3}\.\d{1,3}',
+    r'127\.0\.\d{1,3}\.\d{1,3}',
+    r'^$'
+]
+
+# Whitelist of URL patterns to track
+# Any URL will be allowed if list is empty
+URL_WHITELIST_RE = [
+]
 TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [r'192\.168\.\d{1,3}\.\d{1,3}', r'127\.0\.\d{1,3}\.\d{1,3}', r'^$']

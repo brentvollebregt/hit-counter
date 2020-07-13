@@ -96,14 +96,8 @@ from server import app as application
 
 > Alternatively these config values can be manually set in `config.py`.
 
-## Persistent SQLite Storage to S3 & Docker
-
-Backup sqlite db file in & out S3 compatible storage provider:
-
-* Restore from S3 upon startup of container
-* Periodic backup from inside conainer into S3
-
-S3 backup based on [docker-sqlite-to-s3](https://github.com/jacobtomlinson/docker-sqlite-to-s3)
+### Domain whitelisting
+You can configure the server to only count hits to domains matching a certain pattern. To do so, add regular expression entries to `URL_WHITELIST_RE` in `config.py`, e.g. `r'github\.com'`.
 
 ## Docker
 
@@ -115,9 +109,26 @@ docker build -t hitcounter .
 
 ### Run
 
+By default container sets VOLUME to /app/data, to expose it locally you could run
+
 ```
-docker run --rm -ti -p 80:80 -e S3_BUCKET=sqlite -e AWS_PROFILE=wasabi -e AWS_ACCESS_KEY_ID="X" -e AWS_SECRET_ACCESS_KEY="Y" hitcounter
+docker run --rm -ti-v $PWD/data:/app/data -p 80:80  hitcounter
 ```
+
+##### Persistent Docker volume
+
+```
+docker create --name hitcounter-data hitcounter
+```
+
+```
+docker run --rm -ti --volumes-from hitcounter-data -p 80:80 hitcounter
+```
+
+
+### Persistent SQLite Storage to S3 & Docker
+
+There is an option for container to have persisten storage on a S3 compatible probider.
 
 Demo comes with wasabi example endpoints, provide custom config / db via additional args
 
@@ -127,19 +138,17 @@ Demo comes with wasabi example endpoints, provide custom config / db via additio
 -e BKPINTERVAL=900 # DB Backup to S3 interval in seconds
 ```
 
-### Persistent Docker volume
 
-```
-docker create --name hitcounter-data hitcounter
-```
+Backup sqlite db file in & out S3 compatible storage provider:
 
-```
-docker run --rm -ti --volumes-from hitcounter-data -p 80:80 -e AWS_PROFILE=wasabi -e AWS_ACCESS_KEY_ID="X" -e AWS_SECRET_ACCESS_KEY="Y" hitcounter
-```
+* Restore from S3 upon startup of container
+* Periodic backup from inside conainer into S3
 
-## Demo Log
+S3 backup based on [docker-sqlite-to-s3](https://github.com/jacobtomlinson/docker-sqlite-to-s3)
 
-### Auto restore on startup
+#### Demo Log
+
+##### Auto restore on startup
 
 ```
 Checking for script in /app/prestart.sh
@@ -156,7 +165,7 @@ Done
 *** Starting uWSGI 2.0.18 (64bit) on [Sat Jul 11 05:59:25 2020] ***
 ```
 
-### Auto backup from within container
+##### Auto backup from within container
 
 ```
 # supervisorctl tail sqlbackup

@@ -42,6 +42,9 @@ def countRoute():
     if url is None:
         return config.CANNOT_FIND_URL_MESSAGE, 404
 
+    if not utils.checkURLWhitelist(url):
+        return config.FORBIDDEN_URL_MESSAGE, 403
+
     # Get/generate cookie, cleanup views, add a view, get the count and commit changes
     valid_cookie = utils.checkValidCookie(request, url)
     connection = db_connection.get_connection()
@@ -58,6 +61,9 @@ def countTagRoute():
     if url is None:
         return config.CANNOT_FIND_URL_MESSAGE, 404
 
+    if not utils.checkURLWhitelist(url):
+        return config.FORBIDDEN_URL_MESSAGE, 403
+
     valid_cookie = utils.checkValidCookie(request, url)
     connection = db_connection.get_connection()
     if not valid_cookie:
@@ -73,6 +79,9 @@ def nocountRoute():
     if url is None:
         return config.CANNOT_FIND_URL_MESSAGE, 404
 
+    if not utils.checkURLWhitelist(url):
+        return config.FORBIDDEN_URL_MESSAGE, 403
+
     connection = db_connection.get_connection()
     count = db_connection.getCount(connection, url)
 
@@ -84,6 +93,9 @@ def nocountTagRoute():
     url = utils.getURL(request)
     if url is None:
         return config.CANNOT_FIND_URL_MESSAGE, 404
+
+    if not utils.checkURLWhitelist(url):
+        return config.FORBIDDEN_URL_MESSAGE, 403
 
     connection = db_connection.get_connection()
     count = db_connection.getCount(connection, url)
