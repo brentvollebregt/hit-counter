@@ -1,15 +1,16 @@
 import os
-import sqlite3 as lite
-import config
-from collections import defaultdict
 import re
+import sqlite3 as lite
 
+import config
 
 class DbAccess:
     """ This provides access to the database to keep track of urls and views """
+
     def __init__(self, filename):
         """ Setup connection to file and create tables if they don't exist"""
         self.filename = filename
+        self.connection = None
 
         # Create folder for database file if it doesn't already exist
         if not os.path.exists(os.path.dirname(filename)):
@@ -24,6 +25,7 @@ class DbAccess:
     def get_connection(self):
         """ Get the cursor to use in the current thread and remove rows that have expired in views"""
         connection = lite.connect(self.filename)
+        connection.create_function('REGEXP', 2, self._regexp)
         return connection
 
     def getCount(self, connection, url):
@@ -44,39 +46,68 @@ class DbAccess:
         if count == 0:
             cursor.execute('INSERT INTO url(url, count) VALUES(?, ?)', (url, 0))
         # Add 1 to the url count
-        cursor.execute('UPDATE url SET count = count + 1 WHERE url=?', (url, ))
+        cursor.execute('UPDATE url SET count = count + 1 WHERE url=?', (url,))
         connection.commit()
 
     def getTopSites(self, connection, amount=10):
         """ Get the top domains using this tool by hits. Ignore specified domains """
-        # Select all urls and counts
+        return self.getTop(connection, amount, 'domains')
+
+    def getTopUrls(self, connection, amount=10):
+        """ Get the top urls using this tool by hits. Ignore specified domains """
+        return self.getTop(connection, amount, 'urls')
+
+    def getTop(self, connection, amount, what='domains'):
+        query = self._top_urls_query() if what == 'urls' else self._top_domains_query()
+        # Select all entities and counts
         cursor = connection.cursor()
-        cursor.execute('select url, count from url')
-        urls_and_counts = cursor.fetchall()
+        cursor.execute(
+            query,
+            [*[str(r) for r in config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH], amount]
+        )
+        result = cursor.fetchall()
 
-        # Get total hits per domain
-        site_counts = defaultdict(int)
-        for row in urls_and_counts:
-            if row[0] == b'':
+        entities, values = [], {}
+        for row in result:
+            entity, count = (row[0], row[2]) if what == 'urls' else row
+            if entity == b'':
                 continue
-            # Get the domain - part before the first '/'
-            domain = row[0].split('/')[0]
-            # Check if domain is on the ignore list
-            on_ignore = False
-            for regex in config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH:
-                if re.match(regex, domain) is not None:
-                    on_ignore = True
-                    break
-            if on_ignore:
-                continue
-            # Add hit counts to the domain
-            site_counts[domain] += row[1]
+            entities.append(entity)
+            values[entity] = count
 
-        # Sort the domains by hits
-        sorted_sites = sorted(site_counts, key=lambda x: site_counts[x], reverse=True)
-
-        # Return sorted domains and their values, this allows for lower Python version support
+        # Return sorted entities and their values, this allows for lower Python version support
         return {
-            'domains': sorted_sites[:amount],
-            'values': {site: site_counts[site] for site in site_counts}
+            what: entities,
+            'values': values
         }
+
+    @staticmethod
+    def _top_domains_query():
+        sep = '\nAND '
+        return f"""
+            SELECT substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as domain_sum
+            FROM url
+            WHERE domain != ''
+            GROUP BY domain
+            HAVING {sep.join(['domain NOT REGEXP ?' for _ in range(len(config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH))])}
+            ORDER BY domain_sum DESC
+            LIMIT ?;
+        """
+
+    @staticmethod
+    def _top_urls_query():
+        sep = '\nAND '
+        return f"""
+            SELECT url, substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as url_sum
+            FROM url
+            WHERE domain != ''
+            GROUP BY url
+            HAVING {sep.join(['domain NOT REGEXP ?' for _ in range(len(config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH))])}
+            ORDER BY url_sum DESC
+            LIMIT ?;
+        """
+
+    @staticmethod
+    def _regexp(expr, item):
+        reg = re.compile(expr)
+        return reg.search(item) is not None

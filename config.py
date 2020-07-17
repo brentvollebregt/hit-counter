@@ -32,6 +32,12 @@ CANNOT_FIND_URL_MESSAGE = "Count not find a requested url"
 # Message to return on a 403
 FORBIDDEN_URL_MESSAGE = "Requested url is not whitelisted"
 
+# Show top n domains on front page
+NUM_TOP_DOMAINS = int(os.getenv('NUM_TOP_DOMAINS', '10'))
+
+# Show top n URLs on front page
+NUM_TOP_URLS = int(os.getenv('NUM_TOP_URLS', '0'))
+
 # Regular expressions to ignore when getting top sites
 TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [
     r'192\.168\.\d{1,3}\.\d{1,3}',
