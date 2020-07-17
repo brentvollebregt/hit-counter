@@ -23,6 +23,12 @@ Message to return on a 404.
 ## `FORBIDDEN_URL_MESSAGE`
 Message to return on a 403.
 
+## `NUM_TOP_DOMAINS`
+The number of top domains to display on the home page; set to 0 to disable. Can be overridden with the `NUM_TOP_DOMAINS` environment variable.
+
+## `NUM_TOP_URLS`
+The number of top URLs to display on the home page; set to 0 to disable. Can be overridden with the `NUM_TOP_URLS` environment variable.
+
 ## `TOP_SITES_IGNORE_DOMAIN_RE_MATCH`
 Regular expressions to ignore when getting top sites. If a URL matches one of these expressions, the URL will be ignored in the domain calculation.
 
