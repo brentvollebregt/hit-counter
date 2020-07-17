@@ -59,6 +59,7 @@ class DbAccess:
 
     def getTop(self, connection, amount, what='domains'):
         query = self._top_urls_query() if what == 'urls' else self._top_domains_query()
+
         # Select all entities and counts
         cursor = connection.cursor()
         cursor.execute(
@@ -69,9 +70,7 @@ class DbAccess:
 
         entities, values = [], {}
         for row in result:
-            entity, count = (row[0], row[2]) if what == 'urls' else row
-            if entity == b'':
-                continue
+            entity, count = row[:2]  # We only care about the first two columns; the entity and the count
             entities.append(entity)
             values[entity] = count
 
@@ -98,7 +97,7 @@ class DbAccess:
     def _top_urls_query():
         sep = '\nAND '
         return f"""
-            SELECT url, substr(url, 0, instr(url, '/')) as domain, SUM(count) as url_sum
+            SELECT url, SUM(count) as url_sum, substr(url, 0, instr(url, '/')) as domain
             FROM url
             WHERE domain != ''
             GROUP BY url
