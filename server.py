@@ -31,10 +31,11 @@ def makeSVGRequest(count, url, cookie_required):
 @app.route("/")
 def homeRoute():
     """ Home + tool to create (nocount/count + url in url) """
+    connection = db_connection.get_connection()
     return render_template(
         'index.html',
-        top_sites=db_connection.getTopSites(config.NUM_TOP_DOMAINS),
-        top_urls=db_connection.getTopUrls(config.NUM_TOP_URLS),
+        top_sites=db_connection.getTopSites(connection, config.NUM_TOP_DOMAINS),
+        top_urls=db_connection.getTopUrls(connection, config.NUM_TOP_URLS),
         show_sites=config.NUM_TOP_DOMAINS > 0,
         show_urls=config.NUM_TOP_URLS > 0
     )
@@ -52,9 +53,10 @@ def countRoute():
 
     # Get/generate cookie, cleanup views, add a view, get the count and commit changes
     valid_cookie = utils.checkValidCookie(request, url)
+    connection = db_connection.get_connection()
     if not valid_cookie:
-        db_connection.addView(url)
-    count = db_connection.getCount(url)
+        db_connection.addView(connection, url)
+    count = db_connection.getCount(connection, url)
 
     return makeTextRequest(count, url, not valid_cookie)
 
@@ -69,9 +71,10 @@ def countTagRoute():
         return config.FORBIDDEN_URL_MESSAGE, 403
 
     valid_cookie = utils.checkValidCookie(request, url)
+    connection = db_connection.get_connection()
     if not valid_cookie:
-        db_connection.addView(url)
-    count = db_connection.getCount(url)
+        db_connection.addView(connection, url)
+    count = db_connection.getCount(connection, url)
 
     return makeSVGRequest(count, url, not valid_cookie)
 
@@ -85,7 +88,8 @@ def nocountRoute():
     if not utils.checkURLWhitelist(url):
         return config.FORBIDDEN_URL_MESSAGE, 403
 
-    count = db_connection.getCount(url)
+    connection = db_connection.get_connection()
+    count = db_connection.getCount(connection, url)
 
     return makeTextRequest(count, url, False)
 
@@ -99,7 +103,8 @@ def nocountTagRoute():
     if not utils.checkURLWhitelist(url):
         return config.FORBIDDEN_URL_MESSAGE, 403
 
-    count = db_connection.getCount(url)
+    connection = db_connection.get_connection()
+    count = db_connection.getCount(connection, url)
 
     return makeSVGRequest(count, url, False)
 

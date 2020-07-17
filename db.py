@@ -17,28 +17,20 @@ class DbAccess:
             print('WARN: The parent directory for ' + filename + ' does not exist so it will be created.')
             os.makedirs(os.path.dirname(filename), exist_ok=True)
 
-        self.connect()
-        cursor = self.connection.cursor()
+        connection = lite.connect(filename)
+        connection.execute('pragma journal_mode=wal')
+        cursor = connection.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS url (id INTEGER PRIMARY KEY, url VARCHAR(256), count INTEGER);')
-
-    def connect(self):
-        def regexp(expr, item):
-            reg = re.compile(expr)
-            return reg.search(item) is not None
-
-        self.connection = lite.connect(self.filename, check_same_thread=False)
-        self.connection.execute('pragma journal_mode=wal')
-        self.connection.create_function('REGEXP', 2, regexp)
 
     def get_connection(self):
         """ Get the cursor to use in the current thread and remove rows that have expired in views"""
-        if self.connection is None:
-            self.connect()
-        return self.connection
+        connection = lite.connect(self.filename)
+        connection.create_function('REGEXP', 2, self._regexp)
+        return connection
 
-    def getCount(self, url):
+    def getCount(self, connection, url):
         """ Get the count of a particular url """
-        cursor = self.connection.cursor()
+        cursor = connection.cursor()
         cursor.execute('SELECT count FROM url WHERE url=?', (url,))
         data = cursor.fetchone()
         if data is None:
@@ -46,29 +38,29 @@ class DbAccess:
         else:
             return data[0]
 
-    def addView(self, url):
+    def addView(self, connection, url):
         """ Create url entry if needed and increase url count and add cookie value to views if value is not stored """
-        cursor = self.connection.cursor()
+        cursor = connection.cursor()
         # Make sure the url entry exists
-        count = self.getCount(url)
+        count = self.getCount(connection, url)
         if count == 0:
             cursor.execute('INSERT INTO url(url, count) VALUES(?, ?)', (url, 0))
         # Add 1 to the url count
         cursor.execute('UPDATE url SET count = count + 1 WHERE url=?', (url,))
-        self.connection.commit()
+        connection.commit()
 
-    def getTopSites(self, amount=10):
+    def getTopSites(self, connection, amount=10):
         """ Get the top domains using this tool by hits. Ignore specified domains """
-        return self.getTop(amount, 'domains')
+        return self.getTop(connection, amount, 'domains')
 
-    def getTopUrls(self, amount=10):
+    def getTopUrls(self, connection, amount=10):
         """ Get the top urls using this tool by hits. Ignore specified domains """
-        return self.getTop(amount, 'urls')
+        return self.getTop(connection, amount, 'urls')
 
-    def getTop(self, amount, what='domains'):
+    def getTop(self, connection, amount, what='domains'):
         query = self._top_urls_query() if what == 'urls' else self._top_domains_query()
         # Select all entities and counts
-        cursor = self.connection.cursor()
+        cursor = connection.cursor()
         cursor.execute(
             query,
             [*[str(r) for r in config.TOP_SITES_IGNORE_DOMAIN_RE_MATCH], amount]
@@ -77,11 +69,11 @@ class DbAccess:
 
         entities, values = [], {}
         for row in result:
-            url, domain, count = row
-            if url == b'':
+            entity, count = (row[0], row[2]) if what == 'urls' else row
+            if entity == b'':
                 continue
-            entities.append(url)
-            values[url] = count
+            entities.append(entity)
+            values[entity] = count
 
         # Return sorted entities and their values, this allows for lower Python version support
         return {
@@ -89,10 +81,11 @@ class DbAccess:
             'values': values
         }
 
-    def _top_domains_query(self):
+    @staticmethod
+    def _top_domains_query():
         sep = '\nAND '
         return f"""
-            SELECT url, substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as domain_sum
+            SELECT substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as domain_sum
             FROM url
             WHERE domain != ''
             GROUP BY domain
@@ -101,7 +94,8 @@ class DbAccess:
             LIMIT ?;
         """
 
-    def _top_urls_query(self):
+    @staticmethod
+    def _top_urls_query():
         sep = '\nAND '
         return f"""
             SELECT url, substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as url_sum
@@ -112,3 +106,8 @@ class DbAccess:
             ORDER BY url_sum DESC
             LIMIT ?;
         """
+
+    @staticmethod
+    def _regexp(expr, item):
+        reg = re.compile(expr)
+        return reg.search(item) is not None
