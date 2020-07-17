@@ -17,6 +17,12 @@ The template of the SVG to respond with. Must take `count`, `width`, `recWidth`,
 ## `ENABLE_SSL`
 Enable SSL. Defaults to false for debugging purposes. Can be overridden with the `ENABLE_SSL` environment variable.
 
+## `EXPOSE_METRICS`
+Enable [Prometheus](https://prometheus.io) metrics at the `/metrics` endpoint. Defaults to false for performance reasons. Can be overridden with the `EXPOSE_METRICS` environment variable. However, use this feature with care. It is recommended only for moderately large deployments of _hit-counter_, as a separate metric will be exposed for every URL in your data base.  
+
+### `METRICS_PREFIX`
+Configure the prefix to me used for all Prometheus measurements. Defaults to `hitcounter`, resulting in metrics labels like `hitcounter_hits_total`.
+
 ## `CANNOT_FIND_URL_MESSAGE`
 Message to return on a 404.
 

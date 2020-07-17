@@ -4,7 +4,6 @@ import sqlite3 as lite
 
 import config
 
-
 class DbAccess:
     """ This provides access to the database to keep track of urls and views """
 

@@ -26,6 +26,12 @@ SVG_TEMPLATE = """<?xml version="1.0"?>
 # Enable SSL (set ENABLE_SSL=true to enable)
 ENABLE_SSL = os.getenv('ENABLE_SSL', 'false').lower() == 'true'
 
+# Whether or not to export Prometheus metrics
+EXPOSE_METRICS = os.getenv('EXPOSE_METRICS', 'false').lower() == 'true'
+
+# Prefix for Prometheus metrics
+METRICS_PREFIX = os.getenv('METRICS_PREFIX', 'hitcounter')
+
 # Message to return on a 404
 CANNOT_FIND_URL_MESSAGE = "Count not find a requested url"
 

@@ -2,7 +2,9 @@ import config
 import db
 import utils
 from flask import Flask, request, make_response, render_template
-
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import make_wsgi_app
+from metrics import init_metrics
 
 app = Flask(__name__, static_url_path='')
 db_connection = db.DbAccess(config.DATABASE_FILE_PATH)
@@ -10,6 +12,13 @@ db_connection = db.DbAccess(config.DATABASE_FILE_PATH)
 if config.ENABLE_SSL:
     from flask_sslify import SSLify
     sslify = SSLify(app)
+
+# Metrics
+if config.EXPOSE_METRICS:
+    init_metrics(db_connection)
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+        '/metrics': make_wsgi_app()
+    })
 
 
 def makeTextRequest(count, url, cookie_required):
