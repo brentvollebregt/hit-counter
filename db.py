@@ -4,13 +4,13 @@ import sqlite3 as lite
 
 import config
 
+
 class DbAccess:
     """ This provides access to the database to keep track of urls and views """
 
     def __init__(self, filename):
         """ Setup connection to file and create tables if they don't exist"""
         self.filename = filename
-        self.connection = None
 
         # Create folder for database file if it doesn't already exist
         if not os.path.exists(os.path.dirname(filename)):
@@ -85,7 +85,7 @@ class DbAccess:
     def _top_domains_query():
         sep = '\nAND '
         return f"""
-            SELECT substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as domain_sum
+            SELECT substr(url, 0, instr(url, '/')) as domain, SUM(count) as domain_sum
             FROM url
             WHERE domain != ''
             GROUP BY domain
@@ -98,7 +98,7 @@ class DbAccess:
     def _top_urls_query():
         sep = '\nAND '
         return f"""
-            SELECT url, substr(url, 0, instr((url || '/'), '/')) as domain, SUM(count) as url_sum
+            SELECT url, substr(url, 0, instr(url, '/')) as domain, SUM(count) as url_sum
             FROM url
             WHERE domain != ''
             GROUP BY url
