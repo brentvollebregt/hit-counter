@@ -95,9 +95,9 @@
 
                     <hr>
 
-                {% if show_sites %}
-                    <h2 class="my-4">Top 10 Domains Using This By Views</h2>
-                    <table class="table table-bordered table-sm mw-800p mb-4">
+                {% if top_domain_amount > 0 %}
+                    <h2 class="my-4">Top {{ top_domain_amount }} Domains Using This By Views</h2>
+                    <table class="table table-bordered table-sm mw-800p my-4">
                         <thead>
                             <tr>
                                 <th scope="col">Domain</th>
@@ -105,21 +105,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for site in top_sites['domains'] %}
+                            {% for site in top_domains['domains'] %}
                             <tr>
                                 <td style="word-break: break-all;"><a href="//{{ site }}">{{ site }}</a></td>
-                                <td>{{ top_sites['values'][site] }}</td>
+                                <td>{{ top_domains['values'][site] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-
-                    <hr>
                 {% endif %}
 
-                {% if show_urls %}
-                    <h2 class="my-4">Top 10 URLs Using This By Views</h2>
-                    <table class="table table-bordered table-sm mw-800p mb-4">
+                {% if top_url_amount > 0 %}
+                    <h2 class="my-4">Top {{ top_url_amount }} URLs Using This By Views</h2>
+                    <table class="table table-bordered table-sm mw-800p my-4">
                         <thead>
                             <tr>
                                 <th scope="col">URL</th>
@@ -135,6 +133,10 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                {% endif %}
+
+                {% if top_domain_amount > 0 or top_url_amount > 0 %}
+                    <hr>
                 {% endif %}
 
                     <h2 class="mt-4">About</h2>
