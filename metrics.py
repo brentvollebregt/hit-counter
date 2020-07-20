@@ -1,5 +1,4 @@
 import time
-import math
 from threading import Lock, Timer
 
 from prometheus_client import Gauge
@@ -23,7 +22,7 @@ def init_metrics(db_connection):
 
 
 def register_labels(db_connection, gauge):
-    url_counts = db_connection.getTopUrls(db_connection.get_connection(), -1)
+    url_counts = db_connection.get_top_urls(db_connection.get_connection(), -1)
     for url in url_counts['urls']:
         site, path = _split_url(url)
         gauge.labels(site, path).set_function(_get_resolver(db_connection, site, path))
@@ -35,7 +34,7 @@ def resolve_label_count(db, site, path):
     lock.acquire()
 
     if time.monotonic() - last_fetched >= CACHE_TIMEOUT_SEC:
-        cached_data = db.getTopUrls(db.get_connection(), -1)
+        cached_data = db.get_top_urls(db.get_connection(), -1)
         last_fetched = time.monotonic()
 
     url = f'{site}/{path}'

@@ -1,8 +1,9 @@
 import os
 import re
-import sqlite3 as lite
+import sqlite3
 
 import config
+
 
 class DbAccess:
     """ This provides access to the database to keep track of urls and views """
@@ -16,18 +17,18 @@ class DbAccess:
             print('WARN: The parent directory for ' + filename + ' does not exist so it will be created.')
             os.makedirs(os.path.dirname(filename), exist_ok=True)
 
-        connection = lite.connect(filename)
+        connection = sqlite3.connect(filename)
         connection.execute('pragma journal_mode=wal')
         cursor = connection.cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS url (id INTEGER PRIMARY KEY, url VARCHAR(256), count INTEGER);')
 
     def get_connection(self):
         """ Get the cursor to use in the current thread and remove rows that have expired in views"""
-        connection = lite.connect(self.filename)
-        connection.create_function('REGEXP', 2, self._regexp)
+        connection = sqlite3.connect(self.filename)
+        connection.create_function('REGEXP', 2, self.__regexp)
         return connection
 
-    def getCount(self, connection, url):
+    def get_count(self, connection, url):
         """ Get the count of a particular url """
         cursor = connection.cursor()
         cursor.execute('SELECT count FROM url WHERE url=?', (url,))
@@ -37,27 +38,27 @@ class DbAccess:
         else:
             return data[0]
 
-    def addView(self, connection, url):
+    def add_view(self, connection, url):
         """ Create url entry if needed and increase url count and add cookie value to views if value is not stored """
         cursor = connection.cursor()
         # Make sure the url entry exists
-        count = self.getCount(connection, url)
+        count = self.get_count(connection, url)
         if count == 0:
             cursor.execute('INSERT INTO url(url, count) VALUES(?, ?)', (url, 0))
         # Add 1 to the url count
         cursor.execute('UPDATE url SET count = count + 1 WHERE url=?', (url,))
         connection.commit()
 
-    def getTopSites(self, connection, amount=10):
+    def get_top_sites(self, connection, amount=10):
         """ Get the top domains using this tool by hits. Ignore specified domains """
-        return self.getTop(connection, amount, 'domains')
+        return self.__get_top(connection, amount, 'domains')
 
-    def getTopUrls(self, connection, amount=10):
+    def get_top_urls(self, connection, amount=10):
         """ Get the top urls using this tool by hits. Ignore specified domains """
-        return self.getTop(connection, amount, 'urls')
+        return self.__get_top(connection, amount, 'urls')
 
-    def getTop(self, connection, amount, what='domains'):
-        query = self._top_urls_query() if what == 'urls' else self._top_domains_query()
+    def __get_top(self, connection, amount, what='domains'):
+        query = self.__top_urls_query() if what == 'urls' else self.__top_domains_query()
 
         # Select all entities and counts
         cursor = connection.cursor()
@@ -80,7 +81,7 @@ class DbAccess:
         }
 
     @staticmethod
-    def _top_domains_query():
+    def __top_domains_query():
         sep = '\nAND '
         return f"""
             SELECT substr(url, 0, instr(url, '/')) as domain, SUM(count) as domain_sum
@@ -93,7 +94,7 @@ class DbAccess:
         """
 
     @staticmethod
-    def _top_urls_query():
+    def __top_urls_query():
         sep = '\nAND '
         return f"""
             SELECT url, SUM(count) as url_sum, substr(url, 0, instr(url, '/')) as domain
@@ -106,6 +107,6 @@ class DbAccess:
         """
 
     @staticmethod
-    def _regexp(expr, item):
+    def __regexp(expr, item):
         reg = re.compile(expr)
         return reg.search(item) is not None

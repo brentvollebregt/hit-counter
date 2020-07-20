@@ -1,16 +1,19 @@
-import config
-import random
-import string
 import datetime
-from urllib.parse import urlparse
-import time
+import random
 import re
+import string
+import time
+from urllib.parse import urlparse
 
-def getSVG(count, width, recWidth, textX, url):
+import config
+
+
+def get_svg(count, width, rec_width, text_x, url):
     """ Put the count in the pre-defined svg and return it """
-    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=recWidth, textX=textX, url=url)
+    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=rec_width, textX=text_x, url=url)
 
-def getURL(request):
+
+def get_url(request):
     """ Get the url out of a request either passed as a query parameter or taken from the referrer. Remove any query """
     url = request.args.get('url', request.referrer)
     if url is None:
@@ -18,7 +21,8 @@ def getURL(request):
     parts = urlparse(url)
     return parts.netloc + parts.path
 
-def checkURLWhitelist(url):
+
+def check_url_whitelist(url):
     if not len(config.URL_WHITELIST_RE):
         return True
 
@@ -27,7 +31,8 @@ def checkURLWhitelist(url):
             return True
     return False
 
-def checkValidCookie(request, url):
+
+def check_valid_cookie(request, url):
     """ Check if the cookies expiration hasn't passed """
     if url in request.cookies:
         expires = float(request.cookies.get(url))
@@ -35,26 +40,31 @@ def checkValidCookie(request, url):
             return True
     return False
 
-def getCookieValueToSet():
+
+def get_cookie_value_to_set():
     """ Will return the valid value for a cookie to be set """
     return str(time.time() + config.COOKIE_TIMEOUT)
 
-def randomValue():
-    """ Generate a random string from upper and lowercase letters and digits of a define length """
-    return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(config.COOKIE_RANDOM_VALUE_LENGTH)])
 
-def getExpiration():
+def random_value():
+    """ Generate a random string from upper and lowercase letters and digits of a define length """
+    possible_characters = string.ascii_letters + string.digits
+    return ''.join([random.choice(possible_characters) for _ in range(config.COOKIE_RANDOM_VALUE_LENGTH)])
+
+
+def get_expiration():
     """ Get the expiration time in seconds using defined timeout """
     expire_date = datetime.datetime.now()
     return expire_date + datetime.timedelta(seconds=config.COOKIE_TIMEOUT)
 
-def calculateSVGSizes(count):
+
+def calculate_svg_sizes(count):
     """ Calculate the size of the green half based off the length of count """
     text = str(count)
     sizes = {
-        'width' : 80,
-        'recWidth' : 50,
-        'textX' : 55
+        'width': 80,
+        'recWidth': 50,
+        'textX': 55
     }
     if len(text) > 5:
         sizes['width'] += 6 * (len(text) - 5)
