@@ -52,6 +52,8 @@
         <style>
             .o-a {overflow-x: auto;}
             .mw-800p {max-width: 800px; margin: auto;}
+            .bg-gray-700 {background-color: #4A5568;}
+            pre {margin-top: auto; margin-bottom: auto;}
         </style>
     </head>
     <body class="text-center pt-1">
@@ -66,7 +68,10 @@
 
                     <h2 class="mt-4">Get the Image for the Page It's On</h2>
                     <p class="my-1">If you want to get the hit count image for a page you can edit and you want to count, add this line:</p>
-                    <p id="standard" class="text-primary my-0 o-a">&lt;img src="<script>host()</script>/count/tag.svg" alt="Hits"&gt;</p>
+                    <div class="bg-gray-700 rounded py-2 px-4" style="display: inline-block">
+                        <pre><code class="text-white">&lt;img src="<script>host()</script>/count/tag.svg" alt="Hits"&gt;</code></pre>
+                    </div>
+                    <div></div>
                     <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('standard')">Copy HTML Snippet</button>
 
                     <h2 class="mt-4">Generate SVG Code For A Different Website</h2>
@@ -87,9 +92,15 @@
                         <img id="resultImage" src="" alt="Selected Hit Counter">
                     </div>
                     <p class="text-muted my-1">Image Tag</p>
-                    <p id="resultImageTag" class="text-primary my-0 o-a"></p>
+                    <div class="bg-gray-700 rounded py-2 px-4" style="display: inline-block">
+                        <pre><code class="text-white" id="resultImageTag"></code></pre>
+                    </div>
+                    <div></div>
                     <p class="text-muted my-1">Markdown</p>
-                    <p id="resultMarkdown" class="text-primary my-0 o-a"></p>
+                    <div class="bg-gray-700 rounded py-2 px-4" style="display: inline-block">
+                        <pre><code class="text-white" id="resultMarkdown"></code></pre>
+                    </div>
+                    <div></div>
                     <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('resultImageTag')">Copy Image Tag</button>
                     <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('resultMarkdown')">Copy Markdown</button>
 
