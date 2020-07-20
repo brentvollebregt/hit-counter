@@ -3,6 +3,8 @@
 - [Local Setup](#local-setup)
 - [PythonAnywhere Setup](#pythonanywhere-setup)
 
+Python 3.6 and above is required to run this server.
+
 ## Local Setup
 
 Hosting the serve locally is very basic:
