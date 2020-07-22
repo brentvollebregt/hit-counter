@@ -54,17 +54,10 @@ def home_route():
     )
 
 
-@app.route("/count")
-def count_raw_route():
+@app.route("/count", endpoint="count_raw_route")
+@utils.get_and_validate_url
+def count_raw_route(url):
     """ Return the count for a url and add 1 to it """
-    # Attempt to find any sign of a url, return 404 if we can't find anything
-    url = utils.get_url(request)
-    if url is None:
-        return config.CANNOT_FIND_URL_MESSAGE, 404
-
-    if not utils.check_url_whitelist(url):
-        return config.FORBIDDEN_URL_MESSAGE, 403
-
     # Get/generate cookie, cleanup views, add a view, get the count and commit changes
     valid_cookie = utils.check_valid_cookie(request, url)
     connection = db_connection.get_connection()
@@ -75,16 +68,10 @@ def count_raw_route():
     return make_text_response(count, url, not valid_cookie)
 
 
-@app.route("/count/tag.svg")
-def count_tag_route():
+@app.route("/count/tag.svg", endpoint="count_tag_route")
+@utils.get_and_validate_url
+def count_tag_route(url):
     """ Return svg of count and add 1 to url """
-    url = utils.get_url(request)
-    if url is None:
-        return config.CANNOT_FIND_URL_MESSAGE, 404
-
-    if not utils.check_url_whitelist(url):
-        return config.FORBIDDEN_URL_MESSAGE, 403
-
     valid_cookie = utils.check_valid_cookie(request, url)
     connection = db_connection.get_connection()
     if not valid_cookie:
@@ -94,32 +81,20 @@ def count_tag_route():
     return make_svg_response(count, url, not valid_cookie)
 
 
-@app.route("/nocount")
-def no_count_raw_route():
+@app.route("/nocount", endpoint="no_count_raw_route")
+@utils.get_and_validate_url
+def no_count_raw_route(url):
     """ Return the count for a url """
-    url = utils.get_url(request)
-    if url is None:
-        return config.CANNOT_FIND_URL_MESSAGE, 404
-
-    if not utils.check_url_whitelist(url):
-        return config.FORBIDDEN_URL_MESSAGE, 403
-
     connection = db_connection.get_connection()
     count = db_connection.get_count(connection, url)
 
     return make_text_response(count, url, False)
 
 
-@app.route("/nocount/tag.svg")
-def no_count_tag_route():
+@app.route("/nocount/tag.svg", endpoint="no_count_tag_route")
+@utils.get_and_validate_url
+def no_count_tag_route(url):
     """ Return svg of count """
-    url = utils.get_url(request)
-    if url is None:
-        return config.CANNOT_FIND_URL_MESSAGE, 404
-
-    if not utils.check_url_whitelist(url):
-        return config.FORBIDDEN_URL_MESSAGE, 403
-
     connection = db_connection.get_connection()
     count = db_connection.get_count(connection, url)
 

@@ -5,21 +5,52 @@ import string
 import time
 from urllib.parse import urlparse
 
+from flask import request
+
 import config
 
 
-def get_svg(count, width, rec_width, text_x, url):
-    """ Put the count in the pre-defined svg and return it """
-    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=rec_width, textX=text_x, url=url)
-
-
-def get_url(request):
+def __get_url():
     """ Get the url out of a request either passed as a query parameter or taken from the referrer. Remove any query """
     url = request.args.get('url', request.referrer)
     if url is None:
         return None
     parts = urlparse(url)
     return parts.netloc + parts.path
+
+
+def __validate_url(url):
+    if url is None or url == '':
+        return "Count not find a requested url", 404
+
+    if len(config.URL_WHITELIST_RE) != 0:
+        for reg in config.URL_WHITELIST_RE:
+            if re.match(reg, url) is not None:
+                break
+        else:
+            return "Requested url is not whitelisted", 403
+
+    return None
+
+
+def get_and_validate_url(func):
+    def wrapper(*args, **kwargs):
+        # Get URL
+        url = __get_url()
+
+        # Validate the URL
+        errors = __validate_url(url)
+        if errors is not None:
+            return errors
+
+        # Return response if validation passed
+        return func(url, *args, **kwargs)
+    return wrapper
+
+
+def get_svg(count, width, rec_width, text_x, url):
+    """ Put the count in the pre-defined svg and return it """
+    return config.SVG_TEMPLATE.format(count=count, width=width, recWidth=rec_width, textX=text_x, url=url)
 
 
 def check_url_whitelist(url):
@@ -32,10 +63,10 @@ def check_url_whitelist(url):
     return False
 
 
-def check_valid_cookie(request, url):
+def check_valid_cookie(current_request, url):
     """ Check if the cookies expiration hasn't passed """
-    if url in request.cookies:
-        expires = float(request.cookies.get(url))
+    if url in current_request.cookies:
+        expires = float(current_request.cookies.get(url))
         if expires > time.time():
             return True
     return False
