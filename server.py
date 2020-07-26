@@ -14,13 +14,8 @@ if config.ENABLE_SSL:
 
 # Prometheus metrics
 if config.EXPOSE_METRICS:
-    from prometheus_client import make_wsgi_app
-    from werkzeug.middleware.dispatcher import DispatcherMiddleware
     from metrics import init_metrics
-    init_metrics(db_connection)
-    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
-        '/metrics': make_wsgi_app()
-    })
+    init_metrics(app, db_connection)
 
 
 def make_text_response(count, url, cookie_required):

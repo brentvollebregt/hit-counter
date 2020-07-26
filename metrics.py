@@ -1,7 +1,8 @@
 import time
 from threading import Lock, Timer
 
-from prometheus_client import Gauge
+from prometheus_client import Gauge, make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
 import config
 
@@ -14,11 +15,20 @@ last_fetched = 0
 lock = Lock()
 
 
-def init_metrics(db_connection):
+def init_metrics(app, db_connection):
+    """
+    Initialise Prometheus Metrics
+    :param app: Flask app to serve metrics at `/metrics` from
+    :param db_connection: Connection to the database to get stats
+    """
     g = Gauge(f'{METRICS_PREFIX}_hits_total', 'Total number of hits', ['site', 'path'])
     register_labels(db_connection, g)
 
     Timer(REGISTER_INTERVAL_SEC, lambda: register_labels(db_connection, g)).start()
+
+    app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+        '/metrics': make_wsgi_app()
+    })
 
 
 def register_labels(db_connection, gauge):
