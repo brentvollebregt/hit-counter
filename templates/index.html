@@ -49,12 +49,6 @@
                 document.write(window.location.origin);
             }
         </script>
-        <style>
-            .o-a {overflow-x: auto;}
-            .mw-800p {max-width: 800px; margin: auto;}
-            .bg-gray-700 {background-color: #4A5568;}
-            pre {margin-top: auto; margin-bottom: auto;}
-        </style>
     </head>
     <body class="text-center pt-1">
         <div class="container">
@@ -68,12 +62,12 @@
 
                     <h2 class="mt-4">Get the Image for the Page It's On</h2>
                     <p class="my-1">If you want to get the hit count image for a page you can edit and you want to count, add this line:</p>
-                    <div>
-                        <pre class="bg-gray-700 mw-100 rounded py-2 px-4 d-inline-flex align-items-center justify-content-center">
-                            <code class="text-white">&lt;img src="<script>host()</script>/count/tag.svg" alt="Hits"&gt;</code>
+                    <div class="my-3">
+                        <pre class="bg-dark mw-100 my-0 rounded py-2 px-4 d-inline-flex justify-content-center">
+                            <code class="text-white mw-100">&lt;img src="<script>host()</script>/count/tag.svg" alt="Hits"&gt;</code>
                         </pre>
                     </div>
-                    <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('standard')">Copy HTML Snippet</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="copyContentOf('standard')">Copy HTML Snippet</button>
 
                     <h2 class="mt-4">Generate SVG Code For A Different Website</h2>
                     <div class="container-fluid">
@@ -93,15 +87,15 @@
                         <img id="resultImage" src="" alt="Selected Hit Counter">
                     </div>
                     <p class="text-muted my-1">Image Tag</p>
-                    <div>
-                        <pre class="bg-gray-700 mw-100 rounded py-2 px-4 d-inline-flex align-items-center justify-content-center">
-                            <code class="text-white" id="resultImageTag"></code>
+                    <div class="my-2">
+                        <pre class="bg-dark mw-100 my-0 rounded py-2 px-4 d-inline-flex justify-content-center">
+                            <code class="text-white mw-100" id="resultImageTag"></code>
                         </pre>
                     </div>
                     <p class="text-muted my-1">Markdown</p>
-                    <div>
-                        <pre class="bg-gray-700 mw-100 rounded py-2 px-4 d-inline-flex align-items-center justify-content-center">
-                            <code class="text-white" id="resultMarkdown"></code>
+                    <div class="my-1">
+                        <pre class="bg-dark mw-100 my-0 rounded py-2 px-4 d-inline-flex justify-content-center">
+                            <code class="text-white mw-100" id="resultMarkdown"></code>
                         </pre>
                     </div>
                     <button type="button" class="btn btn-outline-primary mt-3" onclick="copyContentOf('resultImageTag')">Copy Image Tag</button>
