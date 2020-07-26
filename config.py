@@ -32,12 +32,6 @@ EXPOSE_METRICS = os.getenv('EXPOSE_METRICS', 'false').lower() == 'true'
 # Prefix for Prometheus metrics
 METRICS_PREFIX = os.getenv('METRICS_PREFIX', 'hitcounter')
 
-# Message to return on a 404
-CANNOT_FIND_URL_MESSAGE = "Count not find a requested url"
-
-# Message to return on a 403
-FORBIDDEN_URL_MESSAGE = "Requested url is not whitelisted"
-
 # Show top n domains on front page
 NUM_TOP_DOMAINS = int(os.getenv('NUM_TOP_DOMAINS', '10'))
 

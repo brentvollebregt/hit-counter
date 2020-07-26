@@ -23,12 +23,6 @@ Enable [Prometheus](https://prometheus.io) metrics at the `/metrics` endpoint. D
 ### `METRICS_PREFIX`
 Configure the prefix to me used for all Prometheus measurements. Defaults to `hitcounter`, resulting in metrics labels like `hitcounter_hits_total`.
 
-## `CANNOT_FIND_URL_MESSAGE`
-Message to return on a 404.
-
-## `FORBIDDEN_URL_MESSAGE`
-Message to return on a 403.
-
 ## `NUM_TOP_DOMAINS`
 The number of top domains to display on the home page; set to 0 to disable. Can be overridden with the `NUM_TOP_DOMAINS` environment variable.
 

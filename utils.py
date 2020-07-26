@@ -21,7 +21,7 @@ def __get_url():
 
 def __validate_url(url):
     if url is None or url == '':
-        return "Count not find a requested url", 404
+        return "Could not find a requested url", 404
 
     if len(config.URL_WHITELIST_RE) != 0:
         for reg in config.URL_WHITELIST_RE:
