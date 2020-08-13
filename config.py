@@ -45,7 +45,10 @@ TOP_SITES_IGNORE_DOMAIN_RE_MATCH = [
     r'^$'
 ]
 
-# Whitelist of URL patterns to track
-# Any URL will be allowed if list is empty
+# Whitelist of URL patterns to track. Any URL will be allowed if list is empty
 URL_WHITELIST_RE = [
+]
+
+# Regular expressions to match URLs to blacklist
+URL_BLACKLIST_RE = [
 ]

@@ -23,6 +23,10 @@ def __validate_url(url):
     if url is None or url == '':
         return "Could not find a requested url", 404
 
+    for regex in config.URL_BLACKLIST_RE:
+        if re.match(regex, url) is not None:
+            return "URL has been blacklisted", 403
+
     if len(config.URL_WHITELIST_RE) != 0:
         for reg in config.URL_WHITELIST_RE:
             if re.match(reg, url) is not None:
