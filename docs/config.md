@@ -35,7 +35,9 @@ Regular expressions to ignore when getting top sites. If a URL matches one of th
 ## `URL_WHITELIST_RE`
 Regular expressions to decide which URLs to count and return an SVG for. If the server identifies a URL that does not match a regular expression in this list, it will return a 403. Leaving this list empty will disable the whitelist feature.
 
+For example, adding `r'github\.com'` will only allow URLs with `github\.com` in them to be given a non-403 response.
+
 ## `URL_BLACKLIST_RE`
 Regular expressions to decide which URLs to block and return a 403 for. Blacklist regular expressions are checked before whitelist regular expressions.
 
-For example, adding `r'github\.com'` will only allow URLs with `github\.com` in them to be given a non-403 response.
+For example, adding `r'example\.com'` will block all requests for example.com.
