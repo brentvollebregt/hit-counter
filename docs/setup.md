@@ -7,14 +7,18 @@ Python 3.6 and above is required to run this server.
 
 ## Local Setup
 
-Hosting the serve locally is very basic:
+Hosting the server locally is very basic:
 
 1. Clone the repo: `git clone https://github.com/brentvollebregt/hit-counter.git`
 2. cd into the repo: `cd hit-counter`
 3. Install requirements: `python -m pip install -r requirements.txt`
-4. Run the server: `python server.py`
+4. Generate `cert.pem` and `key.pem` in the root directory using `openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365`.
+5. Run the server: `python server.py`
+6. Go to the root of the app (try `https://127.0.0.1:8080/`) and you will be initially welcomed with "*Your connection is not private*". Click "Advanced" -> "Proceed to 127.0.0.1 (unsafe)" to tell your browser that this certificate (that you just generated in #4) is ok. 
 
-After step #4, `data.db` will automatically be generated which will hold all the data of 
+After step #5, `data.db` will automatically be generated which will hold all the data. 
+
+> `cert.pem` and `key.pem` are required to make requests to the the server using HTTPS. HTTPS is required because we are setting Secure=true on cookies due to having to use SameSite="none".
 
 ## PythonAnywhere Setup
 

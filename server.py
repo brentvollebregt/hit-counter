@@ -18,11 +18,22 @@ if config.EXPOSE_METRICS:
     init_metrics(app, db_connection)
 
 
+def add_cookie(response, url):
+    """ Add a cookie that may later be checked for repeated requests in small amounts of time """
+    response.set_cookie(
+        url,
+        utils.get_cookie_value_to_set(),
+        expires=utils.get_expiration(),
+        secure=True,
+        samesite="none"
+    )
+
+
 def make_text_response(count, url, cookie_required):
     """ Create a request with the count with a 200 status and give cookie back """
     response = make_response(str(count), 200)
     if cookie_required:
-        response.set_cookie(url, utils.get_cookie_value_to_set(), expires=utils.get_expiration())
+        add_cookie(response, url)
     return response
 
 
@@ -32,7 +43,7 @@ def make_svg_response(count, url, cookie_required):
     response = make_response(svg, 200)
     response.content_type = 'image/svg+xml'
     if cookie_required:
-        response.set_cookie(url, utils.get_cookie_value_to_set(), expires=utils.get_expiration())
+        add_cookie(response, url)
     return response
 
 
@@ -113,4 +124,4 @@ if __name__ == '__main__':
     ip = '0.0.0.0'
     port = 8080
     print("Site starting on http://" + ip + ":" + str(port))
-    app.run(host=ip, port=port)
+    app.run(host=ip, port=port, ssl_context=('cert.pem', 'key.pem'))
