@@ -8,10 +8,6 @@ import utils
 app = Flask(__name__, static_url_path='')
 db_connection = db.DbAccess(config.DATABASE_FILE_PATH)
 
-if config.ENABLE_SSL:
-    from flask_sslify import SSLify
-    sslify = SSLify(app)
-
 # Prometheus metrics
 if config.EXPOSE_METRICS:
     from metrics import init_metrics

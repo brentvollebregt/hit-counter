@@ -23,9 +23,6 @@ SVG_TEMPLATE = """<?xml version="1.0"?>
 <!-- This count is for the url: {url} -->
 </svg>"""
 
-# Enable SSL (set ENABLE_SSL=true to enable)
-ENABLE_SSL = os.getenv('ENABLE_SSL', 'false').lower() == 'true'
-
 # Whether or not to export Prometheus metrics
 EXPOSE_METRICS = os.getenv('EXPOSE_METRICS', 'false').lower() == 'true'
 
