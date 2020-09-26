@@ -30,6 +30,8 @@ In this example, a hit would be added to the websites count on the server. To st
 <img src="https://hitcounter.pythonanywhere.com/nocount/tag.svg" alt="Hits">
 ```
 
+> Warning: ["*Chrome plans to radually enable strict-origin-when-cross-origin as the default policy in 85; this may impact use cases relying on the referrer value from another origin*"](https://developers.google.com/web/updates/2020/07/referrer-policy-new-chrome-default). To get around this, you'll want to put the URL in the query string as outlined under [Getting a Count For a Site That Isn't Me](#getting-a-count-for-a-site-that-isnt-me).
+
 ### Getting the Count Raw
 If you don't want the SVG file but still want the count to use in something else, you can do a GET request to ```/count``` or as before, ```/nocount``` to not add a count. For Example:
 
