@@ -25,13 +25,18 @@ After step #5, `data.db` will automatically be generated which will hold all the
 This service is publicly hosted at [hitcounter.pythonanywhere.com](https://hitcounter.pythonanywhere.com/), to do this yourself, do the following:
 
 1. Start a new bash console and clone the repo: `git clone https://github.com/brentvollebregt/hit-counter.git`
-2. Create a default web app that uses Flask and the highest version of Python 3. Use the default path provided.
-3. In the web tab, go down to the "Code" heading and go to the file beside "WSGI configuration file".
+2. Create a new Python 3.8 virtual environment: `mkvirtualenv venv --python=/usr/bin/python3.8`
+    - More details at https://help.pythonanywhere.com/pages/Virtualenvs/
+    - Can prove you are using the correct Python by executing `which python` 
+3. Go into the project root: `cd hit-counter`
+4. Install dependencies: `python -m pip install -r requirements.txt`
+5. Create a default web app that uses Flask and the highest version of Python 3. Use the default path provided.
+6. In the web tab, go down to the "Code" heading and go to the file beside "WSGI configuration file".
     3.1 Make the following changes:
     ```diff
     # add your project directory to the sys.path
-    -project_home = '/home/YourUserName/mysite'
-    +project_home = '/home/YourUserName/hit-counter'
+    -project_home = '/home/YOUR_USERNAME/mysite'
+    +project_home = '/home/YOUR_USERNAME/hit-counter'
     if project_home not in sys.path:
         sys.path = [project_home] + sys.path
 
@@ -40,8 +45,12 @@ This service is publicly hosted at [hitcounter.pythonanywhere.com](https://hitco
     +from server import app as application
     ```
     3.2 Save
-4. Go back to the web tab and reload your site.
+7. Go down to "Virtualenv" and set the virtual environment to the location of the virtual environment you created in step 2.
+    - The path will be something like `/home/YOUR_USERNAME/.virtualenvs/venv`
+    - You can find this path when executing `which python`, leave off `/bin/python`.
+8. Under "Security", enable "Force HTTPS". 
+9. Go back to the top of web tab and reload your site.
 
-Your database, `data.db` will be located at `/home/YourUserName`.
+Your database, `data.db` will be located at `~`.
 
-If you want to enable HTTPS on pythonaywhere, go into [`config.py`](../config.py) and set ENABLE_SSL to `True`.
+> A virtual environment is required on pythonanywhere to make sure that required packages and versions exist.
