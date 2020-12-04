@@ -105,14 +105,14 @@ def no_count_tag_route(url):
 
 @app.after_request
 def add_header(r):
-    """
-    Disable caching - https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
-    Also fix "No 'Access-Control-Allow-Origin' header is present on the requested resource."
-    """
+    # Disable caching: https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
     r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     r.headers["Pragma"] = "no-cache"
     r.headers["Expires"] = "0"
-    r.headers["Access-Control-Allow-Origin"] = '*'
+
+    # Allow cookies to be send from cross-origins
+    r.headers["Access-Control-Allow-Origin"] = request.origin if request.origin is not None else '*'
+    r.headers["Access-Control-Allow-Credentials"] = 'true'
     return r
 
 

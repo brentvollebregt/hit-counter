@@ -38,6 +38,7 @@ If you don't want the SVG file but still want the count to use in something else
 
 ```javascript
 let xmlHttp = new XMLHttpRequest();
+xmlHttp.withCredentials = true;
 xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/count', false);
 xmlHttp.send(null);
 count = xmlHttp.responseText;
@@ -47,8 +48,9 @@ count = xmlHttp.responseText;
 
 ```javascript
 let targetUrl = window.location.href;
-$.ajax('https://hitcounter.pythonanywhere.com/count',{
-    data:{url: targetUrl},
+$.ajax('https://hitcounter.pythonanywhere.com/count', {
+    data: { url: targetUrl },
+    xhrFields: { withCredentials: true }
 }).then(count => console.log('Count:' + count));
 ```
 
@@ -69,6 +71,7 @@ And if you want to get the count:
 let targetUrl = 'www.example.com';
 let query = '?url=' + encodeURIComponent(targetUrl);
 let xmlHttp = new XMLHttpRequest();
+xmlHttp.withCredentials = true;
 xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/nocount' + query, false);
 xmlHttp.send(null);
 count = xmlHttp.responseText;
