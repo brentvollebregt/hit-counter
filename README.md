@@ -37,11 +37,23 @@ In this example, a hit would be added to the websites count on the server. To st
 If you don't want the SVG file but still want the count to use in something else, you can do a GET request to ```/count``` or as before, ```/nocount``` to not add a count. For Example:
 
 ```javascript
+fetch('https://hitcounter.pythonanywhere.com/count', {
+    credentials: 'include'
+})
+    .then(res => res.text())
+    .then(count => console.log('Count: ' + count))
+```
+
+#### Using XMLHttpRequest
+
+```javascript
 let xmlHttp = new XMLHttpRequest();
 xmlHttp.withCredentials = true;
-xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/count', false);
+xmlHttp.onload = function() {
+    console.log('Count: ' + this.responseText);
+};
+xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/count', true);
 xmlHttp.send(null);
-count = xmlHttp.responseText;
 ```
 
 #### Using Ajax
@@ -51,7 +63,7 @@ let targetUrl = window.location.href;
 $.ajax('https://hitcounter.pythonanywhere.com/count', {
     data: { url: targetUrl },
     xhrFields: { withCredentials: true }
-}).then(count => console.log('Count:' + count));
+}).then(count => console.log('Count: ' + count));
 ```
 
 > Do not use `data: {url: encodeURIComponent(targetUrl)}` as Ajax will encode the string (url) for you. Doing this will encode the url twice which will then only be decoded on the server once (this can lead to broken tags in the future).
@@ -69,12 +81,11 @@ And if you want to get the count:
 
 ```javascript
 let targetUrl = 'www.example.com';
-let query = '?url=' + encodeURIComponent(targetUrl);
-let xmlHttp = new XMLHttpRequest();
-xmlHttp.withCredentials = true;
-xmlHttp.open('GET', 'https://hitcounter.pythonanywhere.com/nocount' + query, false);
-xmlHttp.send(null);
-count = xmlHttp.responseText;
+fetch(`https://hitcounter.pythonanywhere.com/count?url=${encodeURIComponent(targetUrl)}`, {
+    credentials: 'include'
+})
+    .then(res => res.text())
+    .then(count => console.log('Count: ' + count))
 ```
 
 > There are also some situations where a client will not send the Referer in the header. This is a simple solution to the server not being able to find where the request came from.
