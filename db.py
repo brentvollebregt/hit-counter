@@ -38,6 +38,16 @@ class DbAccess:
         else:
             return data[0]
 
+    def get_sum(self, connection, url):
+        """ Get the sum of counts of urls that contain the given substring """
+        cursor = connection.cursor()
+        cursor.execute('SELECT SUM(count) FROM url WHERE instr(url, ?)>0', (url,))
+        data = cursor.fetchone()
+        if data is None:
+            return 0
+        else:
+            return data[0]
+
     def add_view(self, connection, url):
         """ Create url entry if needed and increase url count and add cookie value to views if value is not stored """
         cursor = connection.cursor()

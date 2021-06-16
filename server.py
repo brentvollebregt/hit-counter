@@ -102,6 +102,21 @@ def no_count_tag_route(url):
 
     return make_svg_response(count, url, False)
 
+@app.route("/sum", endpoint="sum_raw_route")
+@utils.get_and_validate_url
+def sum_raw_route(url):
+    """ Return the count for a url """
+    connection = db_connection.get_connection()
+    count = db_connection.get_sum(connection, url)
+    return make_text_response(count, url, False)
+
+@app.route("/sum/tag.svg", endpoint="sum_tag_route")
+@utils.get_and_validate_url
+def sum_tag_route(url):
+    """ Return the count for a url """
+    connection = db_connection.get_connection()
+    count = db_connection.get_sum(connection, url)
+    return make_svg_response(count, url, False)
 
 @app.after_request
 def add_header(r):
