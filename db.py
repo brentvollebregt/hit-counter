@@ -43,10 +43,10 @@ class DbAccess:
         cursor = connection.cursor()
         cursor.execute('SELECT SUM(count) FROM url WHERE instr(url, ?)>0', (url,))
         data = cursor.fetchone()
+        data = data[0]
         if data is None:
             return 0
-        else:
-            return data[0]
+        return data
 
     def add_view(self, connection, url):
         """ Create url entry if needed and increase url count and add cookie value to views if value is not stored """
