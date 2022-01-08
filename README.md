@@ -1,14 +1,16 @@
 # Hit Counter
 Easily count hits on a website by requesting a SVG that displays a hit count.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
     <img src="https://hitcounter.pythonanywhere.com/count/tag.svg?url=https%3A%2F%2Fgithub.com%2Fbrentvollebregt%2Fhit-counter" alt="Hits">
-</div>
+</div> -->
 
-Live demo hosted at: [hitcounter.pythonanywhere.com](https://hitcounter.pythonanywhere.com/)
+~~Live demo hosted at: [hitcounter.pythonanywhere.com](https://hitcounter.pythonanywhere.com/)~~
 
-> Please note this is only a demo instance and any traffic that causes harm to the server will be blocked.
-> Also due to how this demo instance is being hosted and the large amount of traffic it gets, the server does fall over some times.
+> ~~Please note this is only a demo instance and any traffic that causes harm to the server will be blocked.~~
+> ~~Also due to how this demo instance is being hosted and the large amount of traffic it gets, the server does fall over some times.~~
+
+> PythonAnywhere has understandably disabled the demo instance due to heavy disk usage.
 
 ## What is This?
 This is a server that allows a client to request for an SVG file that displays views for a URL. This URL can either be passed as a query parameter or the referrer (or referer) value in the header will be used.
