@@ -84,7 +84,7 @@ class DbAccess:
     def __top_domains_query():
         sep = '\nAND '
         return f"""
-            SELECT substr(url, 0, instr(url, '/')) as domain, SUM(count) as domain_sum
+            SELECT CASE WHEN instr(url, '/') = 0 THEN url ELSE substr(url, 0, instr(url, '/')) END as domain, SUM(count) as domain_sum
             FROM url
             WHERE domain != ''
             GROUP BY domain
